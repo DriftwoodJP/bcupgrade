@@ -1,4 +1,4 @@
-require "bcupgrade/version"
+require 'bcupgrade/version'
 
 module Bcupgrade
   # Your code goes here...

@@ -1,0 +1,43 @@
+#!/usr/bin/env ruby
+
+require 'bcupgrade'
+require 'optparse'
+require 'readline'
+
+# Show version
+option_parser = OptionParser.new
+option_parser.on('-v', '--version',
+                 'Show version number') do
+  puts Bcupgrade::VERSION
+  exit
+end
+option_parser.parse!(ARGV)
+
+# Create cask list
+puts "\nCreate cask list...\n"
+list = `brew cask list`
+casks = list.delete(' (!)').split("\n")
+puts "#{casks}\n"
+
+# Check update cask
+puts "\nCheck update cask...\n"
+update_casks = []
+casks.each do |cask|
+  info = `brew cask info #{cask}`
+  update_casks.push(cask) if info.include?('Not installed')
+end
+puts "#{update_casks}\n"
+
+# Upgrade cask
+if update_casks.any?
+  update_casks.each do |cask|
+    input = Readline.readline("\nUpgrade #{cask}? [y/n] ")
+    next unless input == 'y'
+    puts "remove #{cask}"
+    # system "rm -rf /usr/local/Caskroom/#{cask}"
+    puts "install #{cask}"
+    # system "brew cask install --force #{cask}"
+  end
+else
+  puts "\nAlready up-to-date."
+end
