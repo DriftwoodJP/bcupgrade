@@ -21,11 +21,7 @@ puts "#{casks}\n"
 
 # Check update cask
 puts "\nCheck update cask...\n"
-update_casks = []
-casks.each do |cask|
-  info = `brew cask info #{cask}`
-  update_casks.push(cask) if info.include?('Not installed')
-end
+update_casks = Bcupgrade.check_update(casks)
 puts "#{update_casks}\n"
 
 # Upgrade cask
@@ -34,9 +30,9 @@ if update_casks.any?
     input = Readline.readline("\nUpgrade #{cask}? [y/n] ")
     next unless input == 'y'
     puts "remove #{cask}"
-    # system "rm -rf /usr/local/Caskroom/#{cask}"
+    system "rm -rf /usr/local/Caskroom/#{cask}"
     puts "install #{cask}"
-    # system "brew cask install --force #{cask}"
+    system "brew cask install --force #{cask}"
   end
 else
   puts "\nAlready up-to-date."
