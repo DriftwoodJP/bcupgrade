@@ -1,4 +1,4 @@
-# Bcupgrade - brew cask upgrade
+# Bcupgrade - brew cask upgrade [![Gem Version](https://badge.fury.io/rb/bcupgrade.svg)](https://badge.fury.io/rb/bcupgrade)
 
 Upgrade all installed brew casks.
 
