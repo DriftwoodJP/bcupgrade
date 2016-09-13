@@ -31,9 +31,14 @@ Atom.app (app)
 
 ## Usage
 
-    % bcupgrade
+```
+% bcupgrade -h
+Usage: bcupgrade [options]
+    -v, --version                    Show version number
+        --dry-run                    Show output without running
+```
 
-`bcupgrade` displays a confirmation prompt \[y/n\] when it attempts to re-install.
+`bcupgrade` displays a confirmation prompt `[y/n]` when it attempts to re-install.
 
 ```
 % bcupgrade
@@ -60,6 +65,25 @@ complete
 ==> Symlinking Binary 'apm' to '/usr/local/bin/apm'
 ==> Symlinking Binary 'atom.sh' to '/usr/local/bin/atom'
 🍺  atom was successfully installed!
+```
+
+- Remove previous versions.
+  `rm -rf /usr/local/Caskroom/#{cask}`
+- Install latest version.
+  `brew cask install --force #{cask}`
+
+```
+% brew cask info atom
+atom: 1.10.2
+https://atom.io/
+/usr/local/Caskroom/atom/1.10.2 (68B)
+From: https://github.com/caskroom/homebrew-cask/blob/master/Casks/atom.rb
+==> Name
+Github Atom
+==> Artifacts
+Atom.app (app)
+/Applications/Atom.app/Contents/Resources/app/apm/node_modules/.bin/apm (binary)
+/Applications/Atom.app/Contents/Resources/app/atom.sh (binary)
 ```
 
 ## Development
