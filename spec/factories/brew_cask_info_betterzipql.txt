@@ -1,0 +1,8 @@
+betterzipql: latest
+https://macitbetter.com/BetterZip-Quick-Look-Generator/
+/usr/local/Caskroom/betterzipql/latest (3 files, 61.0K)
+From: https://github.com/caskroom/homebrew-cask/blob/master/Casks/betterzipql.rb
+==> Name
+BetterZipQL
+==> Artifacts
+BetterZipQL.qlgenerator (qlplugin)

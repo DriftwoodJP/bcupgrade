@@ -6,17 +6,13 @@ module Bcupgrade
     Bcupgrade::brew_cask_list.delete(' (!)').split("\n")
   end
 
-  def self.check_version(casks)
-    update_casks = []
-    casks.each do |cask|
-      cask_info = Bcupgrade::brew_cask_info(cask)
-      lines = cask_info.split(/\n/)
-      version = lines[0].gsub(/.+: (.+)/, '\1')
+  def self.check_version(cask)
+    cask_info = Bcupgrade::brew_cask_info(cask)
+    lines = cask_info.split(/\n/)
+    latest_version = lines[0].gsub(/.+: (.+)/, '\1')
+    installed_path = "#{Bcupgrade::CASKROOM_PATH}/#{cask}/#{latest_version}"
 
-      installed_path = "#{Bcupgrade::CASKROOM_PATH}/#{cask}/#{version}"
-      update_casks.push(cask) unless cask_info.include?(installed_path)
-    end
-    update_casks
+    cask_info.include?(installed_path) ? nil : latest_version
   end
 
   def self.upgrade(casks)
@@ -32,14 +28,20 @@ module Bcupgrade
 
   def self.run(option = false)
     # Check cask list
-    puts "\nCheck cask list...\n"
+    puts "\nCheck brew cask list...\n"
     installed_casks = Bcupgrade.check_list
     puts "#{installed_casks}\n"
 
     # Check cask version
-    puts "\nCheck cask version...\n"
-    update_casks = Bcupgrade.check_version(installed_casks)
-    puts "#{update_casks}\n"
+    puts "\nCheck the latest available version...\n"
+    update_casks = []
+    installed_casks.each do |cask|
+      latest_version = Bcupgrade.check_version(cask)
+      if latest_version
+        puts "#{cask} / #{latest_version}"
+        update_casks.push(cask)
+      end
+    end
 
     if option
       # Upgrade cask

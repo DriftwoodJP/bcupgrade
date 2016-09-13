@@ -1,0 +1,14 @@
+android-studio: 2.1.3.0,143.3101438
+https://developer.android.com/sdk/
+/usr/local/Caskroom/android-studio/2.1.1.0,143.2821654 (does not exist)
+/usr/local/Caskroom/android-studio/2.1.2.0,143.2915827 (68B)
+From: https://github.com/caskroom/homebrew-cask/blob/master/Casks/android-studio.rb
+==> Name
+Android Studio
+==> Artifacts
+Android Studio.app (app)
+==> Caveats
+android-studio requires Java. You can install the latest version with
+
+  brew cask install java
+

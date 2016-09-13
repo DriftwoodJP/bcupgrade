@@ -1,0 +1,11 @@
+alfred: 3.1_718
+https://www.alfredapp.com/
+/usr/local/Caskroom/alfred/2.8.4_437 (does not exist)
+/usr/local/Caskroom/alfred/3.0_652 (does not exist)
+/usr/local/Caskroom/alfred/3.0.2_676 (68B)
+/usr/local/Caskroom/alfred/3.0.3_694 (268 files, 5.8M)
+From: https://github.com/caskroom/homebrew-cask/blob/master/Casks/alfred.rb
+==> Name
+Alfred
+==> Artifacts
+Alfred 3.app (app)
