@@ -32,7 +32,7 @@ module Bcupgrade
     end
   end
 
-  def self.run
+  def self.run(option: false)
     # Check cask list
     puts "\nCheck cask list...\n"
     cask_list = Bcupgrade.check_list
@@ -43,11 +43,13 @@ module Bcupgrade
     update_casks = Bcupgrade.check_version(cask_list)
     puts "#{update_casks}\n"
 
-    # Upgrade cask
-    if update_casks.any?
-      Bcupgrade.upgrade(update_casks)
-    else
-      puts "\nAlready up-to-date."
+    if option
+      # Upgrade cask
+      if update_casks.any?
+        Bcupgrade.upgrade(update_casks)
+      else
+        puts "\nAlready up-to-date."
+      end
     end
   end
 end

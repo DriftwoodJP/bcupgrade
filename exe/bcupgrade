@@ -10,7 +10,14 @@ option_parser.on('-v', '--version', 'Show version number') do
   puts Bcupgrade::VERSION
   exit
 end
+
+# Show output without running
+option_parser.on('--dry-run', 'Show output without running') do
+  Bcupgrade.run
+  exit
+end
+
 option_parser.parse!(ARGV)
 
 # Upgrade running
-Bcupgrade.run
+Bcupgrade.run(true)
