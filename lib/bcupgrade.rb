@@ -20,9 +20,9 @@ module Bcupgrade
       input = Readline.readline("\nUpgrade #{cask}? [y/n] ")
       next unless input == 'y'
       puts "remove #{cask}"
-      system "rm -rf #{Bcupgrade::CASKROOM_PATH}/#{cask}"
+      Bcupgrade::brew_cask_remove(cask)
       puts "install #{cask}"
-      system "brew cask install --force #{cask}"
+      Bcupgrade::brew_cask_install(cask)
     end
   end
 
