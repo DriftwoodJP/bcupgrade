@@ -87,8 +87,4 @@ describe Bcupgrade do
       end
     end
   end
-
-  describe '#upgrade' do
-
-  end
 end

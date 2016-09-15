@@ -11,7 +11,7 @@ This script uses `brew cask info` result.
 
 ```
 % brew cask info atom
-atom: 1.10.1
+atom: 1.10.2
 https://atom.io/
 /usr/local/Caskroom/atom/1.7.3 (does not exist)
 /usr/local/Caskroom/atom/1.8.0 (68B)
@@ -43,11 +43,12 @@ Usage: bcupgrade [options]
 ```
 % bcupgrade
 
-Create cask list...
+Check brew cask list...
 ["1password", "alfred", "atom", "bartender"]
 
-Check update cask...
-["1password" "atom"]
+Check the latest available version...
+1password / 6.3.2
+atom / 1.10.2
 
 Upgrade 1password? [y/n] n
 
