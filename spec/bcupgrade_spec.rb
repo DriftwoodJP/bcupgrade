@@ -8,11 +8,11 @@ describe Bcupgrade do
   describe '#brew_cask_info' do
     let(:installed_path) { Bcupgrade::CASKROOM_PATH }
     let(:app_name) { 'atom' }
-    let(:cask_info) { Bcupgrade::brew_cask_info(app_name) }
-    let(:first_line) {
+    let(:cask_info) { Bcupgrade.brew_cask_info(app_name) }
+    let(:first_line) do
       lines = cask_info.split(/\n/)
       lines[0]
-    }
+    end
     let(:latest_version) { first_line.gsub(/.+: (.+)/, '\1') }
 
     it 'has a app name of cask' do
@@ -29,7 +29,7 @@ describe Bcupgrade do
   end
 
   describe '#brew_cask_list' do
-    let(:cask_list) { Bcupgrade::brew_cask_list }
+    let(:cask_list) { Bcupgrade.brew_cask_list }
 
     it 'should be a kind of String' do
       expect(cask_list).to be_kind_of(String)
@@ -53,36 +53,36 @@ describe Bcupgrade do
   describe '#check_version' do
     context 'When the latest version is installed,' do
       it 'should return "nil"' do
-        allow(Bcupgrade).to receive(:brew_cask_info).and_return( File.read("#{Dir.pwd}/spec/factories/brew_cask_info_atom.txt") )
+        allow(Bcupgrade).to receive(:brew_cask_info).and_return(File.read("#{Dir.pwd}/spec/factories/brew_cask_info_atom.txt"))
         expect(Bcupgrade.check_version('atom')).to eq(nil)
       end
     end
 
     context 'When the latest version is not installed,' do
       it 'should return "version" string' do
-        allow(Bcupgrade).to receive(:brew_cask_info).and_return( File.read("#{Dir.pwd}/spec/factories/brew_cask_info_android-studio.txt") )
+        allow(Bcupgrade).to receive(:brew_cask_info).and_return(File.read("#{Dir.pwd}/spec/factories/brew_cask_info_android-studio.txt"))
         expect(Bcupgrade.check_version('android-studio')).to be_kind_of(String)
       end
     end
 
     context 'When the previous version is installed,' do
       example '(6.3.1) should return "6.3.2"' do
-        allow(Bcupgrade).to receive(:brew_cask_info).and_return( File.read("#{Dir.pwd}/spec/factories/brew_cask_info_1password.txt") )
+        allow(Bcupgrade).to receive(:brew_cask_info).and_return(File.read("#{Dir.pwd}/spec/factories/brew_cask_info_1password.txt"))
         expect(Bcupgrade.check_version('atom')).to eq('6.3.2')
       end
 
       example '(2.1.2.0,143.2915827) should return "2.1.3.0,143.3101438"' do
-        allow(Bcupgrade).to receive(:brew_cask_info).and_return( File.read("#{Dir.pwd}/spec/factories/brew_cask_info_android-studio.txt") )
+        allow(Bcupgrade).to receive(:brew_cask_info).and_return(File.read("#{Dir.pwd}/spec/factories/brew_cask_info_android-studio.txt"))
         expect(Bcupgrade.check_version('android-studio')).to eq('2.1.3.0,143.3101438')
       end
 
       example '(3.0.3_694) should return "3.1_718"' do
-        allow(Bcupgrade).to receive(:brew_cask_info).and_return( File.read("#{Dir.pwd}/spec/factories/brew_cask_info_alfred.txt") )
+        allow(Bcupgrade).to receive(:brew_cask_info).and_return(File.read("#{Dir.pwd}/spec/factories/brew_cask_info_alfred.txt"))
         expect(Bcupgrade.check_version('alfred')).to eq('3.1_718')
       end
 
       example '(latest) should return "nil"' do
-        allow(Bcupgrade).to receive(:brew_cask_info).and_return( File.read("#{Dir.pwd}/spec/factories/brew_cask_info_betterzipql.txt") )
+        allow(Bcupgrade).to receive(:brew_cask_info).and_return(File.read("#{Dir.pwd}/spec/factories/brew_cask_info_betterzipql.txt"))
         expect(Bcupgrade.check_version('betterzipql')).to eq(nil)
       end
     end

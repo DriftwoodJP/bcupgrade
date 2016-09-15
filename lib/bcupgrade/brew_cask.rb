@@ -1,5 +1,5 @@
 module Bcupgrade
-  CASKROOM_PATH = '/usr/local/Caskroom'
+  CASKROOM_PATH = '/usr/local/Caskroom'.freeze
 
   def self.brew_cask_list
     `brew cask list`

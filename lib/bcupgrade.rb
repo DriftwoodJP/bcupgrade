@@ -3,11 +3,11 @@ require 'bcupgrade/brew_cask'
 
 module Bcupgrade
   def self.check_list
-    Bcupgrade::brew_cask_list.delete(' (!)').split("\n")
+    Bcupgrade.brew_cask_list.delete(' (!)').split("\n")
   end
 
   def self.check_version(cask)
-    cask_info = Bcupgrade::brew_cask_info(cask)
+    cask_info = Bcupgrade.brew_cask_info(cask)
     lines = cask_info.split(/\n/)
     latest_version = lines[0].gsub(/.+: (.+)/, '\1')
     installed_path = "#{Bcupgrade::CASKROOM_PATH}/#{cask}/#{latest_version}"
@@ -20,9 +20,9 @@ module Bcupgrade
       input = Readline.readline("\nUpgrade #{cask}? [y/n] ")
       next unless input == 'y'
       puts "remove #{cask}"
-      Bcupgrade::brew_cask_remove(cask)
+      Bcupgrade.brew_cask_remove(cask)
       puts "install #{cask}"
-      Bcupgrade::brew_cask_install(cask)
+      Bcupgrade.brew_cask_install(cask)
     end
   end
 
