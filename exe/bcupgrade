@@ -4,20 +4,22 @@ require 'bcupgrade'
 require 'optparse'
 require 'readline'
 
-# Show version number
-option_parser = OptionParser.new
-option_parser.on('-v', '--version', 'Show version number') do
-  puts Bcupgrade::VERSION
-  exit
+OptionParser.new do |opt|
+  begin
+    opt.on('-v', '--version', 'Show version number') do
+      puts Bcupgrade::VERSION
+      exit
+    end
+    opt.on('--dry-run', 'Show output without running') do
+      opt.parse!(ARGV)
+      Bcupgrade.run
+      exit
+    end
+
+    opt.parse!(ARGV)
+    Bcupgrade.run(true)
+  rescue => e
+    puts e.to_s
+    exit
+  end
 end
-
-# Show output without running
-option_parser.on('--dry-run', 'Show output without running') do
-  Bcupgrade.run
-  exit
-end
-
-option_parser.parse!(ARGV)
-
-# Upgrade running
-Bcupgrade.run(true)
