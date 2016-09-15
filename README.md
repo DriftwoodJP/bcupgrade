@@ -1,4 +1,4 @@
-# Bcupgrade - brew cask upgrade
+# Bcupgrade - brew cask upgrade [![Gem Version](https://badge.fury.io/rb/bcupgrade.svg)](https://badge.fury.io/rb/bcupgrade)
 
 Upgrade all installed brew casks.
 
@@ -11,7 +11,7 @@ This script uses `brew cask info` result.
 
 ```
 % brew cask info atom
-atom: 1.10.1
+atom: 1.10.2
 https://atom.io/
 /usr/local/Caskroom/atom/1.7.3 (does not exist)
 /usr/local/Caskroom/atom/1.8.0 (68B)
@@ -31,18 +31,24 @@ Atom.app (app)
 
 ## Usage
 
-    % bcupgrade
+```
+% bcupgrade -h
+Usage: bcupgrade [options]
+    -v, --version                    Show version number
+        --dry-run                    Show output without running
+```
 
-`bcupgrade` displays a confirmation prompt \[y/n\] when it attempts to re-install.
+`bcupgrade` displays a confirmation prompt `[y/n]` when it attempts to re-install.
 
 ```
 % bcupgrade
 
-Create cask list...
+Check brew cask list...
 ["1password", "alfred", "atom", "bartender"]
 
-Check update cask...
-["1password" "atom"]
+Check the latest available version...
+1password / 6.3.2
+atom / 1.10.2
 
 Upgrade 1password? [y/n] n
 
@@ -60,6 +66,25 @@ complete
 ==> Symlinking Binary 'apm' to '/usr/local/bin/apm'
 ==> Symlinking Binary 'atom.sh' to '/usr/local/bin/atom'
 🍺  atom was successfully installed!
+```
+
+- Remove previous versions.
+  `rm -rf /usr/local/Caskroom/#{cask}`
+- Install latest version.
+  `brew cask install --force #{cask}`
+
+```
+% brew cask info atom
+atom: 1.10.2
+https://atom.io/
+/usr/local/Caskroom/atom/1.10.2 (68B)
+From: https://github.com/caskroom/homebrew-cask/blob/master/Casks/atom.rb
+==> Name
+Github Atom
+==> Artifacts
+Atom.app (app)
+/Applications/Atom.app/Contents/Resources/app/apm/node_modules/.bin/apm (binary)
+/Applications/Atom.app/Contents/Resources/app/atom.sh (binary)
 ```
 
 ## Development

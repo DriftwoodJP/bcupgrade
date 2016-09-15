@@ -4,36 +4,22 @@ require 'bcupgrade'
 require 'optparse'
 require 'readline'
 
-# Show version
-option_parser = OptionParser.new
-option_parser.on('-v', '--version',
-                 'Show version number') do
-  puts Bcupgrade::VERSION
-  exit
-end
-option_parser.parse!(ARGV)
+OptionParser.new do |opt|
+  begin
+    opt.on('-v', '--version', 'Show version number') do
+      puts Bcupgrade::VERSION
+      exit
+    end
+    opt.on('--dry-run', 'Show output without running') do
+      opt.parse!(ARGV)
+      Bcupgrade.run
+      exit
+    end
 
-# Create cask list
-puts "\nCreate cask list...\n"
-list = `brew cask list`
-casks = list.delete(' (!)').split("\n")
-puts "#{casks}\n"
-
-# Check update cask
-puts "\nCheck update cask...\n"
-update_casks = Bcupgrade.check_update(casks)
-puts "#{update_casks}\n"
-
-# Upgrade cask
-if update_casks.any?
-  update_casks.each do |cask|
-    input = Readline.readline("\nUpgrade #{cask}? [y/n] ")
-    next unless input == 'y'
-    puts "remove #{cask}"
-    system "rm -rf /usr/local/Caskroom/#{cask}"
-    puts "install #{cask}"
-    system "brew cask install --force #{cask}"
+    opt.parse!(ARGV)
+    Bcupgrade.run(true)
+  rescue => e
+    puts e.to_s
+    exit
   end
-else
-  puts "\nAlready up-to-date."
 end
