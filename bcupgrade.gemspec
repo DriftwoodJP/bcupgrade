@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['DriftwoodJP']
   spec.email         = ['DriftwoodJP@users.noreply.github.com']
 
-  spec.summary       = %q{Upgrade all installed brew casks.}
-  spec.description   = %q{Upgrade all installed brew casks.}
+  spec.summary       = 'Upgrade all installed brew casks.'
+  spec.description   = 'Upgrade all installed brew casks.'
   spec.homepage      = 'https://github.com/DriftwoodJP/bcupgrade'
   spec.license       = 'MIT'
 
@@ -33,4 +33,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'bundler', '~> 1.13'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
+  spec.add_development_dependency 'rubocop', '~> 0.42.0'
+  spec.add_development_dependency 'pry', '~> 0.10.3'
 end

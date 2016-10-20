@@ -28,12 +28,12 @@ module Bcupgrade
 
   def self.run(option = false)
     # Check cask list
-    puts "\nCheck brew cask list...\n"
+    puts "\n==> Check 'brew cask list'...\n"
     installed_casks = Bcupgrade.check_list
     puts "#{installed_casks}\n"
 
     # Check cask version
-    puts "\nCheck the latest available version...\n"
+    puts "\n==> Check 'brew cask info' for the latest available version...\n"
     update_casks = []
     installed_casks.each do |cask|
       latest_version = Bcupgrade.check_version(cask)

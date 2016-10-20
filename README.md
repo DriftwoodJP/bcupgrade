@@ -1,4 +1,6 @@
-# Bcupgrade - brew cask upgrade [![Gem Version](https://badge.fury.io/rb/bcupgrade.svg)](https://badge.fury.io/rb/bcupgrade)
+[![Gem Version](https://badge.fury.io/rb/bcupgrade.svg)](https://badge.fury.io/rb/bcupgrade)
+
+# Bcupgrade - brew cask upgrade
 
 Upgrade all installed brew casks.
 
@@ -43,10 +45,10 @@ Usage: bcupgrade [options]
 ```
 % bcupgrade
 
-Check brew cask list...
+==> Check 'brew cask list'...
 ["1password", "alfred", "atom", "bartender"]
 
-Check the latest available version...
+==> Check 'brew cask info' for the latest available version...
 1password / 6.3.2
 atom / 1.10.2
 
