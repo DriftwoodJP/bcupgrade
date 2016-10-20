@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['DriftwoodJP']
   spec.email         = ['DriftwoodJP@users.noreply.github.com']
 
-  spec.summary       = %q{Upgrade all installed brew casks.}
-  spec.description   = %q{Upgrade all installed brew casks.}
+  spec.summary       = 'Upgrade all installed brew casks.'
+  spec.description   = 'Upgrade all installed brew casks.'
   spec.homepage      = 'https://github.com/DriftwoodJP/bcupgrade'
   spec.license       = 'MIT'
 
