@@ -9,7 +9,12 @@ module Bcupgrade
   def self.check_version(cask)
     cask_info = Bcupgrade.brew_cask_info(cask)
     lines = cask_info.split(/\n/)
-    latest_version = lines[0].gsub(/.+: (.+)/, '\1')
+
+    latest_version = if lines[0] =~ /Error: /
+                       'error'
+                     else
+                       lines[0].gsub(/.+: (.+)/, '\1')
+                     end
     installed_path = "#{Bcupgrade::CASKROOM_PATH}/#{cask}/#{latest_version}"
 
     cask_info.include?(installed_path) ? nil : latest_version
