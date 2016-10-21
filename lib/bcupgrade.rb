@@ -9,8 +9,7 @@ module Bcupgrade
   def self.check_version(cask)
     cask_info = Bcupgrade.brew_cask_info(cask)
     lines = cask_info.split(/\n/)
-
-    latest_version = if lines[0] =~ /Error: /
+    latest_version = if lines[0].nil?
                        'error'
                      else
                        lines[0].gsub(/.+: (.+)/, '\1')
