@@ -26,14 +26,6 @@ describe Bcupgrade do
     it 'has installed paths of cask' do
       expect(cask_info).to include("#{installed_path}/#{app_name}/")
     end
-
-    context 'When raise error "Error: File /Users/***/*** is not a plain file"' do
-      it 'should return "error"' do
-        brew_cask_info_error = "Error: File '/Users/***/dropbox' is not a plain file"
-        allow(Bcupgrade).to receive(:brew_cask_info).and_return(brew_cask_info_error)
-        expect(Bcupgrade.check_version('dropbox')).to eq('error')
-      end
-    end
   end
 
   describe '#brew_cask_list' do
@@ -60,6 +52,14 @@ describe Bcupgrade do
   end
 
   describe '#check_version' do
+    context 'When raise error "Error: File /Users/***/*** is not a plain file"' do
+      it 'should return "error"' do
+        brew_cask_info_error = ''
+        allow(Bcupgrade).to receive(:brew_cask_info).and_return(brew_cask_info_error)
+        expect(Bcupgrade.check_version('dropbox')).to eq('error')
+      end
+    end
+
     context 'When the latest version is installed,' do
       it 'should return "nil"' do
         output = File.read('spec/factories/brew_cask_info_atom.txt')
