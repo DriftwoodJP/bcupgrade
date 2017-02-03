@@ -15,28 +15,10 @@ Metrics/AbcSize:
 Metrics/BlockLength:
   Max: 88
 
-# Offense count: 7
-# Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
-# URISchemes: http, https
-Metrics/LineLength:
-  Max: 96
-
 # Offense count: 2
 # Configuration parameters: CountComments.
 Metrics/MethodLength:
   Max: 22
-
-# Offense count: 20
-# Configuration parameters: SkipBlocks.
-RSpec/DescribedClass:
-  Exclude:
-    - 'spec/bcupgrade_spec.rb'
-
-# Offense count: 7
-# Configuration parameters: CustomTransform, IgnoredWords.
-RSpec/ExampleWording:
-  Exclude:
-    - 'spec/bcupgrade_spec.rb'
 
 # Offense count: 2
 Style/Documentation:
