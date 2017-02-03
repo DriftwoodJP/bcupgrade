@@ -46,6 +46,10 @@ describe Bcupgrade do
       expect(Bcupgrade.check_list).to be_kind_of(Array)
     end
 
+    it 'should return "installed_casks" and "error_casks"' do
+      expect(Bcupgrade.check_list).to eq([%w(1password actprinter alfred), %w(atom)])
+    end
+
     it 'should not include "(!)"' do
       expect(Bcupgrade.check_list.to_s).not_to include('(!)')
     end

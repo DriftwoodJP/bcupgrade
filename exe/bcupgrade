@@ -20,5 +20,6 @@ OptionParser.new do |opt|
     Bcupgrade.run(true)
   rescue => e
     puts e.to_s
+    exit
   end
 end

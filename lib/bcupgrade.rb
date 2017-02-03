@@ -3,7 +3,19 @@ require 'bcupgrade/brew_cask'
 
 module Bcupgrade
   def self.check_list
-    Bcupgrade.brew_cask_list.delete(' (!)').split("\n")
+    cask_list = Bcupgrade.brew_cask_list.split("\n")
+
+    installed_casks = []
+    error_casks = []
+    cask_list.each do |cask|
+      if cask.include?(' (!)')
+        error_casks.push(cask.delete(' (!)'))
+      else
+        installed_casks.push(cask)
+      end
+    end
+
+    [installed_casks, error_casks]
   end
 
   def self.check_version(cask)
@@ -33,8 +45,15 @@ module Bcupgrade
   def self.run(option = false)
     # Check cask list
     puts "\n==> Check 'brew cask list'...\n"
-    installed_casks = Bcupgrade.check_list
+    cask_list = Bcupgrade.check_list
+    installed_casks = cask_list[0]
+    error_casks = cask_list[1]
+
     puts "#{installed_casks}\n"
+
+    unless error_casks == []
+      puts "\nSkip re-install: can't found brew cask info\n#{error_casks}\n"
+    end
 
     # Check cask version
     puts "\n==> Check 'brew cask info' for the latest available version...\n"
@@ -47,13 +66,11 @@ module Bcupgrade
       end
     end
 
-    if option
-      # Upgrade cask
-      if update_casks.any?
-        Bcupgrade.upgrade(update_casks)
-      else
-        puts "\nAlready up-to-date."
-      end
+    # Upgrade cask
+    if update_casks.any?
+      Bcupgrade.upgrade(update_casks) if option
+    else
+      puts "\nAlready up-to-date."
     end
   end
 end
