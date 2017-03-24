@@ -1,7 +1,22 @@
 require 'bcupgrade/version'
 require 'bcupgrade/brew_cask'
+require 'yaml'
+
 
 module Bcupgrade
+  def self.load_config
+    file = File.join(ENV['HOME'], '.bcupgrade')
+    YAML.load_file(file) if File.exist?(file)
+  end
+
+  def self.installed_casks(casks, config)
+    if config.nil?
+      casks
+    else
+      casks - Array(config['ignore'])
+    end
+  end
+
   def self.check_list
     cask_list = Bcupgrade.brew_cask_list.split("\n")
 
@@ -43,10 +58,13 @@ module Bcupgrade
   end
 
   def self.run(option = false)
+    config = Bcupgrade.load_config
+
     # Check cask list
     puts "\n==> Check 'brew cask list'...\n"
+
     cask_list = Bcupgrade.check_list
-    installed_casks = cask_list[0]
+    installed_casks = Bcupgrade.installed_casks(cask_list[0], config)
     error_casks = cask_list[1]
 
     puts "#{installed_casks}\n"
@@ -57,6 +75,7 @@ module Bcupgrade
 
     # Check cask version
     puts "\n==> Check 'brew cask info' for the latest available version...\n"
+
     update_casks = []
     installed_casks.each do |cask|
       latest_version = Bcupgrade.check_version(cask)
