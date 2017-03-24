@@ -1,38 +1,41 @@
 require 'spec_helper'
 
 describe Bcupgrade do
-  it 'has a version number' do
-    expect(Bcupgrade::VERSION).not_to be(nil)
-  end
-
-  describe '#brew_cask_info' do
-    let(:installed_path) { Bcupgrade::CASKROOM_PATH }
-    let(:app_name) { 'atom' }
-    let(:cask_info) { described_class.brew_cask_info(app_name) }
-    let(:first_line) do
-      lines = cask_info.split(/\n/)
-      lines[0]
-    end
-    let(:latest_version) { first_line.gsub(/.+: (.+)/, '\1') }
-
-    it 'has a app name of cask' do
-      expect(first_line).to match(/#{app_name}: /)
+  describe '#load_config' do
+    context 'if the config file exists' do
+      it 'returns a object' do
+        ENV['HOME'] = 'spec/factories'
+        expect(described_class.load_config).to eq('ignore' => %w(atom omniplan1))
+      end
     end
 
-    it 'has a latest version number of cask' do
-      expect(first_line).to match(latest_version)
-    end
-
-    it 'has installed paths of cask' do
-      expect(cask_info).to include("#{installed_path}/#{app_name}/")
+    context 'if the config file does not exist' do
+      it 'returns a nil' do
+        ENV['HOME'] = ''
+        expect(described_class.load_config).to eq(nil)
+      end
     end
   end
 
-  describe '#brew_cask_list' do
-    let(:cask_list) { described_class.brew_cask_list }
+  describe '#installed_casks' do
+    let(:casks) { %w(1password alfred atom bartender) }
+    let(:config) { { 'ignore' => %w(atom omniplan1) } }
 
-    it 'has a kind of String' do
-      expect(cask_list).to be_kind_of(String)
+    it 'has a kind of Array' do
+      expect(described_class.installed_casks(casks, config)).to be_kind_of(Array)
+    end
+
+    context "if config['ignore'] exists" do
+      it 'returns an argument "casks" without ignore values' do
+        expect(described_class.installed_casks(casks, config)).to eq(%w(1password alfred bartender))
+      end
+    end
+
+    context "if config['ignore'] does not exist" do
+      it 'returns an argument "casks"' do
+        config = { 'foo' => %w(bar buzz) }
+        expect(described_class.installed_casks(casks, config)).to eq(%w(1password alfred atom bartender))
+      end
     end
   end
 
