@@ -89,6 +89,20 @@ Atom.app (app)
 /Applications/Atom.app/Contents/Resources/app/atom.sh (binary)
 ```
 
+
+## Configuration File
+
+in the user's `~/.bcupgrade` (YAML syntax).
+
+If you want to ignore upgrade casks, you can add settings.
+
+```
+ignore:
+  - omniplan1
+  - sublime-text2
+```
+
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies.
