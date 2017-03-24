@@ -2,7 +2,6 @@ require 'bcupgrade/version'
 require 'bcupgrade/brew_cask'
 require 'yaml'
 
-
 module Bcupgrade
   def self.load_config
     file = File.join(ENV['HOME'], '.bcupgrade')
