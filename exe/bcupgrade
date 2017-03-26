@@ -6,18 +6,17 @@ require 'readline'
 
 OptionParser.new do |opt|
   begin
+    options = {}
     opt.on('-v', '--version', 'Show version number') do
       puts Bcupgrade::VERSION
       exit
     end
-    opt.on('--dry-run', 'Show output without running') do
-      opt.parse!(ARGV)
-      Bcupgrade.run
-      exit
+    opt.on('--dry-run', 'Show output without running') do |v|
+      options[:dry_run] = v
     end
 
     opt.parse!(ARGV)
-    Bcupgrade.run(true)
+    Bcupgrade.run(options)
   rescue => e
     puts e.to_s
     exit

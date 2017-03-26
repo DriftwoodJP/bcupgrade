@@ -56,7 +56,7 @@ module Bcupgrade
     end
   end
 
-  def self.run(option = false)
+  def self.run(options)
     config = load_config
 
     # Check cask list
@@ -86,7 +86,7 @@ module Bcupgrade
 
     # Upgrade cask
     if update_casks.any?
-      upgrade(update_casks) if option
+      upgrade(update_casks) unless options[:dry_run]
     else
       puts "\nAlready up-to-date."
     end
