@@ -4,14 +4,14 @@ describe Bcupgrade do
   describe '#load_config' do
     context 'if the config file exists' do
       it 'returns a object' do
-        ENV['HOME'] = 'spec/factories'
+        allow(ENV).to receive(:[]).with('HOME').and_return('spec/factories')
         expect(described_class.load_config).to eq('ignore' => %w(atom omniplan1))
       end
     end
 
     context 'if the config file does not exist' do
       it 'returns a nil' do
-        ENV['HOME'] = ''
+        allow(ENV).to receive(:[]).with('HOME').and_return('')
         expect(described_class.load_config).to eq(nil)
       end
     end
