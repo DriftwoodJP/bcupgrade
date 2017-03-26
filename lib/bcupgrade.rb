@@ -1,6 +1,6 @@
-require 'bcupgrade/version'
-require 'bcupgrade/brew_cask'
 require 'yaml'
+require_relative 'bcupgrade/version'
+require_relative 'bcupgrade/brew_cask'
 
 module Bcupgrade
   def self.load_config
@@ -17,7 +17,7 @@ module Bcupgrade
   end
 
   def self.check_list
-    cask_list = Bcupgrade.brew_cask_list.split("\n")
+    cask_list = BrewCask.brew_cask_list.split("\n")
 
     installed_casks = []
     error_casks = []
@@ -33,14 +33,14 @@ module Bcupgrade
   end
 
   def self.check_version(cask)
-    cask_info = Bcupgrade.brew_cask_info(cask)
+    cask_info = BrewCask.brew_cask_info(cask)
     lines = cask_info.split(/\n/)
     latest_version = if lines[0].nil?
                        'error'
                      else
                        lines[0].gsub(/.+: (.+)/, '\1')
                      end
-    installed_path = "#{Bcupgrade::CASKROOM_PATH}/#{cask}/#{latest_version}"
+    installed_path = "#{BrewCask::CASKROOM_PATH}/#{cask}/#{latest_version}"
 
     cask_info.include?(installed_path) ? nil : latest_version
   end
@@ -50,20 +50,20 @@ module Bcupgrade
       input = Readline.readline("\nUpgrade #{cask}? [y/n] ")
       next unless input == 'y'
       puts "remove #{cask}"
-      Bcupgrade.brew_cask_remove(cask)
+      BrewCask.brew_cask_remove(cask)
       puts "install #{cask}"
-      Bcupgrade.brew_cask_install(cask)
+      BrewCask.brew_cask_install(cask)
     end
   end
 
   def self.run(option = false)
-    config = Bcupgrade.load_config
+    config = load_config
 
     # Check cask list
     puts "\n==> Check 'brew cask list'...\n"
 
-    cask_list = Bcupgrade.check_list
-    installed_casks = Bcupgrade.installed_casks(cask_list[0], config)
+    cask_list = check_list
+    installed_casks = installed_casks(cask_list[0], config)
     error_casks = cask_list[1]
 
     puts "#{installed_casks}\n"
@@ -77,7 +77,7 @@ module Bcupgrade
 
     update_casks = []
     installed_casks.each do |cask|
-      latest_version = Bcupgrade.check_version(cask)
+      latest_version = check_version(cask)
       if latest_version
         puts "#{cask} / #{latest_version}"
         update_casks.push(cask)
@@ -86,7 +86,7 @@ module Bcupgrade
 
     # Upgrade cask
     if update_casks.any?
-      Bcupgrade.upgrade(update_casks) if option
+      upgrade(update_casks) if option
     else
       puts "\nAlready up-to-date."
     end

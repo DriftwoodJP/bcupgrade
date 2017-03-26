@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Bcupgrade do
+describe Bcupgrade::BrewCask do
   describe '#brew_cask_info' do
-    let(:installed_path) { Bcupgrade::CASKROOM_PATH }
+    let(:installed_path) { Bcupgrade::BrewCask::CASKROOM_PATH }
     let(:app_name) { 'atom' }
     let(:cask_info) { described_class.brew_cask_info(app_name) }
     let(:first_line) do
