@@ -17,7 +17,7 @@ module Bcupgrade
   end
 
   def self.check_list
-    cask_list = BrewCask.brew_cask_list.split("\n")
+    cask_list = BrewCask.list.split("\n")
 
     installed_casks = []
     error_casks = []
@@ -33,7 +33,7 @@ module Bcupgrade
   end
 
   def self.check_version(cask)
-    cask_info = BrewCask.brew_cask_info(cask)
+    cask_info = BrewCask.info(cask)
     lines = cask_info.split(/\n/)
     latest_version = if lines[0].nil?
                        'error'
@@ -50,9 +50,9 @@ module Bcupgrade
       input = Readline.readline("\nUpgrade #{cask}? [y/n] ")
       next unless input == 'y'
       puts "remove #{cask}"
-      BrewCask.brew_cask_remove(cask)
+      BrewCask.remove(cask)
       puts "install #{cask}"
-      BrewCask.brew_cask_install(cask)
+      BrewCask.install(cask)
     end
   end
 
