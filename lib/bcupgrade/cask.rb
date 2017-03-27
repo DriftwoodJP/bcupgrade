@@ -9,6 +9,30 @@ module Bcupgrade
       @list = check_list
     end
 
+    def self.check_version(cask)
+      cask_info = BrewCask.info(cask)
+      lines = cask_info.split(/\n/)
+      latest_version = if lines[0].nil?
+                         'error'
+                       else
+                         lines[0].gsub(/.+: (.+)/, '\1')
+                       end
+      installed_path = "#{BrewCask::CASKROOM_PATH}/#{cask}/#{latest_version}"
+
+      cask_info.include?(installed_path) ? nil : latest_version
+    end
+
+    def self.upgrade(casks)
+      casks.each do |cask|
+        input = Readline.readline("\nUpgrade #{cask}? [y/n] ")
+        next unless input == 'y'
+        puts "remove #{cask}"
+        BrewCask.remove(cask)
+        puts "install #{cask}"
+        BrewCask.install(cask)
+      end
+    end
+
     private
 
     def check_list

@@ -6,3 +6,6 @@ AllCops:
 
 LineLength:
   Max: 120
+
+RSpec/NestedGroups:
+  Max: 4
