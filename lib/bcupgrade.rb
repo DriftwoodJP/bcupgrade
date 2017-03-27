@@ -17,7 +17,7 @@ module Bcupgrade
   end
 
   def self.check_list
-    cask_list = BrewCask.list.split("\n")
+    cask_list = BrewCask.list.split(/\n/)
 
     installed_casks = []
     error_casks = []
