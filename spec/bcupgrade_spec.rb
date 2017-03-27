@@ -1,63 +1,6 @@
 require 'spec_helper'
 
 describe Bcupgrade do
-  describe '#load_config' do
-    context 'if the config file exists' do
-      it 'returns a object' do
-        allow(ENV).to receive(:[]).with('HOME').and_return('spec/factories')
-        expect(described_class.load_config).to eq('ignore' => %w(atom omniplan1))
-      end
-    end
-
-    context 'if the config file does not exist' do
-      it 'returns a nil' do
-        allow(ENV).to receive(:[]).with('HOME').and_return('')
-        expect(described_class.load_config).to eq(nil)
-      end
-    end
-  end
-
-  describe '#installed_casks' do
-    let(:casks) { %w(1password alfred atom bartender) }
-    let(:config) { { 'ignore' => %w(atom omniplan1) } }
-
-    it 'has a kind of Array' do
-      expect(described_class.installed_casks(casks, config)).to be_kind_of(Array)
-    end
-
-    context "if config['ignore'] exists" do
-      it 'returns an argument "casks" without ignore values' do
-        expect(described_class.installed_casks(casks, config)).to eq(%w(1password alfred bartender))
-      end
-    end
-
-    context "if config['ignore'] does not exist" do
-      it 'returns an argument "casks"' do
-        config = { 'foo' => %w(bar buzz) }
-        expect(described_class.installed_casks(casks, config)).to eq(%w(1password alfred atom bartender))
-      end
-    end
-  end
-
-  describe '#check_list' do
-    before do
-      output = "atom (!)\n1password\nactprinter\nalfred\n"
-      allow(Bcupgrade::BrewCask).to receive(:list).and_return(output)
-    end
-
-    it 'has a kind of Array' do
-      expect(described_class.check_list).to be_kind_of(Array)
-    end
-
-    it 'returns "installed_casks" and "error_casks"' do
-      expect(described_class.check_list).to eq([%w(1password actprinter alfred), %w(atom)])
-    end
-
-    it 'has not include "(!)"' do
-      expect(described_class.check_list.to_s).not_to include('(!)')
-    end
-  end
-
   describe '#check_version' do
     context 'When raise error "Error: File /Users/***/*** is not a plain file"' do
       it 'returns "error"' do

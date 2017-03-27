@@ -1,37 +1,8 @@
-require 'yaml'
 require_relative 'bcupgrade/version'
 require_relative 'bcupgrade/brew_cask'
+require_relative 'bcupgrade/cask'
 
 module Bcupgrade
-  def self.load_config
-    file = File.join(ENV['HOME'], '.bcupgrade')
-    YAML.load_file(file) if File.exist?(file)
-  end
-
-  def self.installed_casks(casks, config)
-    if config.nil?
-      casks
-    else
-      casks - Array(config['ignore'])
-    end
-  end
-
-  def self.check_list
-    cask_list = BrewCask.list.split(/\n/)
-
-    installed_casks = []
-    error_casks = []
-    cask_list.each do |cask|
-      if cask.include?(' (!)')
-        error_casks.push(cask.delete(' (!)'))
-      else
-        installed_casks.push(cask)
-      end
-    end
-
-    [installed_casks, error_casks]
-  end
-
   def self.check_version(cask)
     cask_info = BrewCask.info(cask)
     lines = cask_info.split(/\n/)
@@ -57,17 +28,16 @@ module Bcupgrade
   end
 
   def self.run(options)
-    config = load_config
+    instance = Cask.new
 
     # Check cask list
     puts "\n==> Check 'brew cask list'...\n"
+    cask_list = instance.check_list
 
-    cask_list = check_list
-    installed_casks = installed_casks(cask_list[0], config)
-    error_casks = cask_list[1]
-
+    installed_casks = cask_list[0]
     puts "#{installed_casks}\n"
 
+    error_casks = cask_list[1]
     unless error_casks == []
       puts "\nSkip re-install: can't found brew cask info\n#{error_casks}\n"
     end
