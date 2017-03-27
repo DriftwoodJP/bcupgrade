@@ -28,16 +28,16 @@ module Bcupgrade
   end
 
   def self.run(options)
-    instance = Cask.new
+    cask = Cask.new
 
     # Check cask list
     puts "\n==> Check 'brew cask list'...\n"
-    cask_list = instance.check_list
 
+    cask_list = cask.list
     installed_casks = cask_list[0]
-    puts "#{installed_casks}\n"
-
     error_casks = cask_list[1]
+
+    puts "#{installed_casks}\n"
     unless error_casks == []
       puts "\nSkip re-install: can't found brew cask info\n#{error_casks}\n"
     end
@@ -46,11 +46,11 @@ module Bcupgrade
     puts "\n==> Check 'brew cask info' for the latest available version...\n"
 
     update_casks = []
-    installed_casks.each do |cask|
-      latest_version = check_version(cask)
+    installed_casks.each do |name|
+      latest_version = check_version(name)
       if latest_version
-        puts "#{cask} / #{latest_version}"
-        update_casks.push(cask)
+        puts "#{name} / #{latest_version}"
+        update_casks.push(name)
       end
     end
 

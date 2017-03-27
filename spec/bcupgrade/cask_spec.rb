@@ -49,15 +49,15 @@ describe Bcupgrade::Cask do
     end
 
     it 'has a kind of Array' do
-      expect(instance.check_list).to be_kind_of(Array)
+      expect(instance.send(:check_list)).to be_kind_of(Array)
     end
 
     it 'returns "installed_casks" and "error_casks"' do
-      expect(instance.check_list).to eq([%w(1password actprinter alfred), %w(atom)])
+      expect(instance.send(:check_list)).to eq([%w(1password actprinter alfred), %w(atom)])
     end
 
     it 'has not include "(!)"' do
-      expect(instance.check_list.to_s).not_to include('(!)')
+      expect(instance.send(:check_list).to_s).not_to include('(!)')
     end
   end
 end

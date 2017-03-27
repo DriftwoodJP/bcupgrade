@@ -2,12 +2,14 @@ require 'yaml'
 
 module Bcupgrade
   class Cask
-    attr_reader :config, :check_list
+    attr_reader :config, :list
 
     def initialize
       @config = load_config
-      @check_list = check_list
+      @list = check_list
     end
+
+    private
 
     def check_list
       cask_list = BrewCask.list.split(/\n/)
@@ -24,8 +26,6 @@ module Bcupgrade
 
       [ignore_casks(installed_casks), error_casks]
     end
-
-    private
 
     def load_config
       file = File.join(ENV['HOME'], '.bcupgrade')
