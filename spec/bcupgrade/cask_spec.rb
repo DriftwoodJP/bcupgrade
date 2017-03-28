@@ -1,7 +1,9 @@
 require 'spec_helper'
 
 describe Bcupgrade::Cask do
-  let(:instance) { described_class.new }
+  let(:options) { {} }
+  let(:args) { [] }
+  let(:instance) { described_class.new(options, args) }
 
   describe 'Private Method' do
     describe '#load_config' do
@@ -24,41 +26,59 @@ describe Bcupgrade::Cask do
       let(:casks) { %w(1password alfred atom bartender) }
 
       it 'has a kind of Array' do
-        expect(instance.send(:ignore_casks, casks)).to be_kind_of(Array)
+        expect(instance.send(:trim_ignore_casks, casks)).to be_kind_of(Array)
       end
 
       context "if config['ignore'] exists" do
         it 'returns an argument "casks" without ignore values' do
           allow(ENV).to receive(:[]).with('HOME').and_return('spec/factories')
-          expect(instance.send(:ignore_casks, casks)).to eq(%w(1password alfred bartender))
+          expect(instance.send(:trim_ignore_casks, casks)).to eq(%w(1password alfred bartender))
         end
       end
 
       context "if config['ignore'] does not exist" do
         it 'returns an argument "casks"' do
           allow(ENV).to receive(:[]).with('HOME').and_return('')
-          expect(instance.send(:ignore_casks, casks)).to eq(%w(1password alfred atom bartender))
+          expect(instance.send(:trim_ignore_casks, casks)).to eq(%w(1password alfred atom bartender))
         end
       end
     end
 
-    describe '#check_list' do
+    describe '#create_upgrade_target' do
       let(:output) { "atom (!)\n1password\nactprinter\nalfred\n" }
 
-      before do
-        allow(Bcupgrade::BrewCask).to receive(:list).and_return(output)
+      it 'has a kind of Array' do
+        expect(instance.send(:create_upgrade_target)).to be_kind_of(Array)
       end
 
-      it 'has a kind of Array' do
-        expect(instance.send(:check_list)).to be_kind_of(Array)
+      context 'if the @args does not exist' do
+        before do
+          allow(Bcupgrade::BrewCask).to receive(:list).and_return(output)
+        end
+
+        it 'returns "installed_casks" and "error_casks"' do
+          expect(instance.send(:create_upgrade_target)).to eq([%w(1password actprinter alfred), %w(atom)])
+        end
+
+        it 'has not include "(!)"' do
+          expect(instance.send(:create_upgrade_target).to_s).not_to include('(!)')
+        end
       end
+
+      context 'if the @args exists' do
+        let(:args) { %w(cask1 cask2) }
+
+        it 'has @args' do
+          expect(instance.send(:create_upgrade_target)).to eq([%w(cask1 cask2), %w()])
+        end
+      end
+    end
+
+    describe '#trim_target_to_a' do
+      let(:array) { ['atom (!)', '1password', 'actprinter', 'alfred'] }
 
       it 'returns "installed_casks" and "error_casks"' do
-        expect(instance.send(:check_list)).to eq([%w(1password actprinter alfred), %w(atom)])
-      end
-
-      it 'has not include "(!)"' do
-        expect(instance.send(:check_list).to_s).not_to include('(!)')
+        expect(instance.send(:trim_target_to_a, array)).to eq([%w(1password actprinter alfred), %w(atom)])
       end
     end
   end
@@ -114,4 +134,8 @@ describe Bcupgrade::Cask do
       end
     end
   end
+
+  # describe '#upgrade' do
+  #
+  # end
 end

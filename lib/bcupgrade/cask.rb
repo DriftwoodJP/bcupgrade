@@ -4,9 +4,11 @@ module Bcupgrade
   class Cask
     attr_reader :list
 
-    def initialize
+    def initialize(options, args)
       @config = load_config
-      @list = check_list
+      @options = options
+      @args = args.uniq
+      @list = create_upgrade_target
     end
 
     def self.check_version(cask)
@@ -40,12 +42,20 @@ module Bcupgrade
       YAML.load_file(file) if File.exist?(file)
     end
 
-    def check_list
-      cask_list = BrewCask.list.split(/\n/)
+    def create_upgrade_target
+      if @args.any?
+        trim_target_to_a(@args)
+      else
+        check_target = trim_target_to_a(BrewCask.list.split(/\n/))
+        [trim_ignore_casks(check_target[0]), check_target[1]]
+      end
+    end
 
+    def trim_target_to_a(array)
       installed_casks = []
       error_casks = []
-      cask_list.each do |cask|
+
+      array.each do |cask|
         if cask.include?(' (!)')
           error_casks.push(cask.delete(' (!)'))
         else
@@ -53,10 +63,10 @@ module Bcupgrade
         end
       end
 
-      [ignore_casks(installed_casks), error_casks]
+      [installed_casks, error_casks]
     end
 
-    def ignore_casks(casks)
+    def trim_ignore_casks(casks)
       if @config.nil?
         casks
       else

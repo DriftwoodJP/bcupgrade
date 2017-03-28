@@ -3,8 +3,8 @@ require_relative 'bcupgrade/brew_cask'
 require_relative 'bcupgrade/cask'
 
 module Bcupgrade
-  def self.run(options)
-    cask = Cask.new
+  def self.run(options, args)
+    cask = Cask.new(options, args)
 
     # Check cask list
     puts "\n==> Check 'brew cask list'...\n"
@@ -32,7 +32,9 @@ module Bcupgrade
 
     # Upgrade cask
     if update_casks.any?
-      Cask.upgrade(update_casks) unless options[:dry_run]
+      unless options[:dry_run]
+        Cask.upgrade(update_casks)
+      end
     else
       puts "\nAlready up-to-date."
     end
