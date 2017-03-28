@@ -1,10 +1,18 @@
 require 'spec_helper'
 
-describe Bcupgrade do
-  describe '#brew_cask_info' do
-    let(:installed_path) { Bcupgrade::CASKROOM_PATH }
+describe Bcupgrade::BrewCask do
+  describe '#list' do
+    let(:cask_list) { described_class.list }
+
+    it 'has a kind of String' do
+      expect(cask_list).to be_kind_of(String)
+    end
+  end
+
+  describe '#info' do
+    let(:installed_path) { Bcupgrade::BrewCask::CASKROOM_PATH }
     let(:app_name) { 'atom' }
-    let(:cask_info) { described_class.brew_cask_info(app_name) }
+    let(:cask_info) { described_class.info(app_name) }
     let(:first_line) do
       lines = cask_info.split(/\n/)
       lines[0]
@@ -21,14 +29,6 @@ describe Bcupgrade do
 
     it 'has installed paths of cask' do
       expect(cask_info).to include("#{installed_path}/#{app_name}/")
-    end
-  end
-
-  describe '#brew_cask_list' do
-    let(:cask_list) { described_class.brew_cask_list }
-
-    it 'has a kind of String' do
-      expect(cask_list).to be_kind_of(String)
     end
   end
 end
