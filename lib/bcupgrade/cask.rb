@@ -2,7 +2,7 @@ require 'yaml'
 
 module Bcupgrade
   class Cask
-    attr_reader :config, :list
+    attr_reader :list
 
     def initialize
       @config = load_config
@@ -57,10 +57,10 @@ module Bcupgrade
     end
 
     def ignore_casks(casks)
-      if config.nil?
+      if @config.nil?
         casks
       else
-        casks - Array(config['ignore'])
+        casks - Array(@config['ignore'])
       end
     end
   end
