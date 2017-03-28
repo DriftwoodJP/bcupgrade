@@ -5,10 +5,10 @@ module Bcupgrade
     attr_reader :list
 
     def initialize(options, args)
-      @config = load_config
+      @config = config
       @options = options
       @args = args.uniq
-      @list = create_upgrade_target
+      @list = upgrade_target
     end
 
     def self.check_version(cask)
@@ -37,12 +37,12 @@ module Bcupgrade
 
     private
 
-    def load_config
+    def config
       file = File.join(ENV['HOME'], '.bcupgrade')
       YAML.load_file(file) if File.exist?(file)
     end
 
-    def create_upgrade_target
+    def upgrade_target
       if @args.any?
         trim_target_to_a(@args)
       else

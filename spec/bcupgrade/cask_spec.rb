@@ -10,14 +10,14 @@ describe Bcupgrade::Cask do
       context 'if the config file exists' do
         it 'returns a object' do
           allow(ENV).to receive(:[]).with('HOME').and_return('spec/factories')
-          expect(instance.send(:load_config)).to eq('ignore' => %w(atom omniplan1))
+          expect(instance.send(:config)).to eq('ignore' => %w(atom omniplan1))
         end
       end
 
       context 'if the config file does not exist' do
         it 'returns a nil' do
           allow(ENV).to receive(:[]).with('HOME').and_return('')
-          expect(instance.send(:load_config)).to eq(nil)
+          expect(instance.send(:config)).to eq(nil)
         end
       end
     end
@@ -48,7 +48,7 @@ describe Bcupgrade::Cask do
       let(:output) { "atom (!)\n1password\nactprinter\nalfred\n" }
 
       it 'has a kind of Array' do
-        expect(instance.send(:create_upgrade_target)).to be_kind_of(Array)
+        expect(instance.send(:upgrade_target)).to be_kind_of(Array)
       end
 
       context 'if the @args does not exist' do
@@ -57,11 +57,11 @@ describe Bcupgrade::Cask do
         end
 
         it 'returns "installed_casks" and "error_casks"' do
-          expect(instance.send(:create_upgrade_target)).to eq([%w(1password actprinter alfred), %w(atom)])
+          expect(instance.send(:upgrade_target)).to eq([%w(1password actprinter alfred), %w(atom)])
         end
 
         it 'has not include "(!)"' do
-          expect(instance.send(:create_upgrade_target).to_s).not_to include('(!)')
+          expect(instance.send(:upgrade_target).to_s).not_to include('(!)')
         end
       end
 
@@ -69,7 +69,7 @@ describe Bcupgrade::Cask do
         let(:args) { %w(cask1 cask2) }
 
         it 'has @args' do
-          expect(instance.send(:create_upgrade_target)).to eq([%w(cask1 cask2), %w()])
+          expect(instance.send(:upgrade_target)).to eq([%w(cask1 cask2), %w()])
         end
       end
     end
