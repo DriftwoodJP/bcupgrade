@@ -35,6 +35,11 @@ module Bcupgrade
 
     private
 
+    def load_config
+      file = File.join(ENV['HOME'], '.bcupgrade')
+      YAML.load_file(file) if File.exist?(file)
+    end
+
     def check_list
       cask_list = BrewCask.list.split(/\n/)
 
@@ -49,11 +54,6 @@ module Bcupgrade
       end
 
       [ignore_casks(installed_casks), error_casks]
-    end
-
-    def load_config
-      file = File.join(ENV['HOME'], '.bcupgrade')
-      YAML.load_file(file) if File.exist?(file)
     end
 
     def ignore_casks(casks)
