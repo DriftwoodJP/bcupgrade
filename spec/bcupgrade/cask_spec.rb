@@ -81,14 +81,40 @@ describe Bcupgrade::Cask do
         expect(instance.send(:trim_target_to_a, array)).to eq([%w(1password actprinter alfred), %w(atom)])
       end
     end
+
+    describe '#trim_latest_version' do
+      context 'if the brew cask info does not exist' do
+        let(:input) { input = '' }
+
+        it 'returns the nil' do
+          # expect(instance.send(:trim_latest_version, input)).to eq(nil)
+          expect(described_class.trim_latest_version(input)).to eq(nil)
+        end
+      end
+
+      context 'if the brew cask info exists' do
+        let(:input) { input = File.read('spec/factories/brew_cask_info_atom.txt') }
+
+        it 'returns a version number' do
+          # expect(instance.send(:trim_latest_version, input)).to eq('1.10.2')
+          expect(described_class.trim_latest_version(input)).to eq('1.10.2')
+        end
+      end
+    end
   end
 
   describe '#check_version' do
+    context 'When raise error "Error: No available Cask for foobar"' do
+      it 'returns the nil' do
+        expect(described_class.check_version('foobar')).to eq(nil)
+      end
+    end
+
     context 'When raise error "Error: File /Users/***/*** is not a plain file"' do
-      it 'returns "error"' do
+      it 'returns the nil' do
         brew_cask_info_error = ''
         allow(Bcupgrade::BrewCask).to receive(:info).and_return(brew_cask_info_error)
-        expect(described_class.check_version('dropbox')).to eq('error')
+        expect(described_class.check_version('dropbox')).to eq(nil)
       end
     end
 
