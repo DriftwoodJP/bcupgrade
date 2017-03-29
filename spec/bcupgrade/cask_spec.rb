@@ -168,7 +168,7 @@ describe Bcupgrade::Cask do
     end
   end
 
-  describe '#upgrade' do
+  describe '#upgrade_version' do
     let(:casks) { ['sublime-text2'] }
 
     before do
