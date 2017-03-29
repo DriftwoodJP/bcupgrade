@@ -83,85 +83,91 @@ describe Bcupgrade::Cask do
     end
 
     describe '#trim_latest_version' do
-      context 'if the brew cask info does not exist' do
-        let(:input) { input = '' }
-
+      context 'if the brew cask info does not exist(raise Error)' do
         it 'returns the nil' do
-          # expect(instance.send(:trim_latest_version, input)).to eq(nil)
-          expect(described_class.trim_latest_version(input)).to eq(nil)
+          input = ''
+          expect(instance.send(:trim_latest_version, input)).to eq(nil)
         end
       end
 
       context 'if the brew cask info exists' do
-        let(:input) { input = File.read('spec/factories/brew_cask_info_atom.txt') }
-
         it 'returns a version number' do
-          # expect(instance.send(:trim_latest_version, input)).to eq('1.10.2')
-          expect(described_class.trim_latest_version(input)).to eq('1.10.2')
+          input = File.read('spec/factories/brew_cask_info_atom.txt')
+          expect(instance.send(:trim_latest_version, input)).to eq('1.10.2')
+        end
+
+        it 'returns a "6.3.2" format' do
+          input = File.read('spec/factories/brew_cask_info_1password.txt')
+          expect(instance.send(:trim_latest_version, input)).to eq('6.3.2')
+        end
+
+        it 'returns a "2.1.3.0,143.3101438" format' do
+          input = File.read('spec/factories/brew_cask_info_android-studio.txt')
+          expect(instance.send(:trim_latest_version, input)).to eq('2.1.3.0,143.3101438')
+        end
+
+        it 'returns a "3.1_718" format' do
+          input = File.read('spec/factories/brew_cask_info_alfred.txt')
+          expect(instance.send(:trim_latest_version, input)).to eq('3.1_718')
+        end
+
+        it 'returns a "latest" format' do
+          input = File.read('spec/factories/brew_cask_info_betterzipql.txt')
+          expect(instance.send(:trim_latest_version, input)).to eq('latest')
         end
       end
     end
   end
 
   describe '#check_version' do
-    context 'When raise error "Error: No available Cask for foobar"' do
-      it 'returns the nil' do
-        expect(described_class.check_version('foobar')).to eq(nil)
-      end
+    it 'returns a Array' do
+      instance.instance_variable_set('@list', [%w(android-studio), %w()])
+      output = File.read('spec/factories/brew_cask_info_android-studio.txt')
+      allow(Bcupgrade::BrewCask).to receive(:info).and_return(output)
+      expect(instance.send(:check_version)).to be_kind_of(Array)
     end
 
-    context 'When raise error "Error: File /Users/***/*** is not a plain file"' do
-      it 'returns the nil' do
-        brew_cask_info_error = ''
-        allow(Bcupgrade::BrewCask).to receive(:info).and_return(brew_cask_info_error)
-        expect(described_class.check_version('dropbox')).to eq(nil)
+    context 'When brew cask info raise error "Error: No available Cask for foobar"' do
+      it 'returns  an empty array' do
+        instance.instance_variable_set('@list', [%w(foobar), %w()])
+        expect(instance.send(:check_version)).to eq([])
+      end
+
+      it 'returns an empty array (using stub)' do
+        instance.instance_variable_set('@list', [%w(foobar), %w()])
+        allow(Bcupgrade::BrewCask).to receive(:info).and_return('')
+        expect(instance.send(:check_version)).to eq([])
       end
     end
 
     context 'When the latest version is installed,' do
-      it 'returns "nil"' do
+      it 'returns an empty array' do
+        instance.instance_variable_set('@list', [%w(atom), %w()])
         output = File.read('spec/factories/brew_cask_info_atom.txt')
         allow(Bcupgrade::BrewCask).to receive(:info).and_return(output)
-        expect(described_class.check_version('atom')).to eq(nil)
+        expect(instance.send(:check_version)).to eq([])
       end
     end
 
     context 'When the latest version is not installed,' do
-      it 'returns "version" string' do
+      it 'returns an array that include cask name' do
+        instance.instance_variable_set('@list', [%w(android-studio), %w()])
         output = File.read('spec/factories/brew_cask_info_android-studio.txt')
         allow(Bcupgrade::BrewCask).to receive(:info).and_return(output)
-        expect(described_class.check_version('android-studio')).to be_kind_of(String)
+        expect(instance.send(:check_version)).to eq(['android-studio'])
       end
     end
 
     context 'When the previous version is installed,' do
-      example '(6.3.1) returns "6.3.2"' do
+      it 'returns an array that include cask name' do
+        instance.instance_variable_set('@list', [%w(1password), %w()])
         output = File.read('spec/factories/brew_cask_info_1password.txt')
         allow(Bcupgrade::BrewCask).to receive(:info).and_return(output)
-        expect(described_class.check_version('atom')).to eq('6.3.2')
-      end
-
-      example '(2.1.2.0,143.2915827) returns "2.1.3.0,143.3101438"' do
-        output = File.read('spec/factories/brew_cask_info_android-studio.txt')
-        allow(Bcupgrade::BrewCask).to receive(:info).and_return(output)
-        expect(described_class.check_version('android-studio')).to eq('2.1.3.0,143.3101438')
-      end
-
-      example '(3.0.3_694) returns "3.1_718"' do
-        output = File.read('spec/factories/brew_cask_info_alfred.txt')
-        allow(Bcupgrade::BrewCask).to receive(:info).and_return(output)
-        expect(described_class.check_version('alfred')).to eq('3.1_718')
-      end
-
-      example '(latest) returns "nil"' do
-        output = File.read('spec/factories/brew_cask_info_betterzipql.txt')
-        allow(Bcupgrade::BrewCask).to receive(:info).and_return(output)
-        expect(described_class.check_version('betterzipql')).to eq(nil)
+        expect(instance.send(:check_version)).to eq(['1password'])
       end
     end
   end
 
-  # describe '#upgrade' do
-  #
-  # end
+  xdescribe '#upgrade' do
+  end
 end

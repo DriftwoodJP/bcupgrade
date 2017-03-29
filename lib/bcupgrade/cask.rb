@@ -11,14 +11,24 @@ module Bcupgrade
       @list = upgrade_target
     end
 
-    # TODO: refactoring
-    def self.check_version(cask)
-      cask_info = BrewCask.info(cask)
-      latest_version = trim_latest_version(cask_info)
+    def check_version
+      installed_casks = @list[0]
 
-      string = "#{BrewCask::CASKROOM_PATH}/#{cask}/#{latest_version}"
+      update_casks = []
+      installed_casks.each do |name|
+        cask_info = BrewCask.info(name)
+        version_number = trim_latest_version(cask_info)
 
-      cask_info.include?(string) ? nil : latest_version
+        string = "#{BrewCask::CASKROOM_PATH}/#{name}/#{version_number}"
+        latest_version = cask_info.include?(string) ? nil : version_number
+
+        if latest_version
+          puts "#{name} / #{latest_version}"
+          update_casks.push(name)
+        end
+      end
+
+      update_casks
     end
 
     def self.upgrade(casks)
@@ -71,8 +81,7 @@ module Bcupgrade
       end
     end
 
-    # TODO: refactoring
-    def self.trim_latest_version(cask_info)
+    def trim_latest_version(cask_info)
       lines = cask_info.split(/\n/)
       lines[0].gsub(/.+: (.+)/, '\1') if lines[0]
     end

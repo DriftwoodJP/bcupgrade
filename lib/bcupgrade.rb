@@ -21,14 +21,7 @@ module Bcupgrade
     # Check cask version
     puts "\n==> Check 'brew cask info' for the latest available version...\n"
 
-    update_casks = []
-    installed_casks.each do |name|
-      latest_version = Cask.check_version(name)
-      if latest_version
-        puts "#{name} / #{latest_version}"
-        update_casks.push(name)
-      end
-    end
+    update_casks = cask.check_version
 
     # Upgrade cask
     if update_casks.any?
