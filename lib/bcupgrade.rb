@@ -14,7 +14,7 @@ module Bcupgrade
     error_casks = cask_list[1]
 
     puts "#{installed_casks}\n"
-    unless error_casks == []
+    if error_casks.any?
       puts "\nSkip re-install: can't found brew cask info\n#{error_casks}\n"
     end
 
@@ -25,9 +25,9 @@ module Bcupgrade
 
     # Upgrade cask
     if update_casks.any?
-      unless options[:dry_run]
-        Cask.upgrade(update_casks)
-      end
+      return if options[:dry_run]
+
+      Cask.upgrade(update_casks)
     else
       puts "\nAlready up-to-date."
     end

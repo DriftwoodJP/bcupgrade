@@ -168,6 +168,8 @@ describe Bcupgrade::Cask do
     end
   end
 
-  xdescribe '#upgrade' do
+  describe '#upgrade' do
+    xit 'is pending' do
+    end
   end
 end

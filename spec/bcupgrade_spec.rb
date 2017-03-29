@@ -1,4 +1,8 @@
 require 'spec_helper'
 
-xdescribe Bcupgrade do
+describe Bcupgrade do
+  describe '#run' do
+    xit 'is pending' do
+    end
+  end
 end
