@@ -31,12 +31,22 @@ module Bcupgrade
       update_casks
     end
 
-    def self.upgrade(casks)
+    def self.upgrade_version(options, casks)
+      return if options[:dry_run]
+
       casks.each do |cask|
-        input = Readline.readline("\nUpgrade #{cask}? [y/n] ")
+        input = if options[:install]
+                  'y'
+                else
+                  Readline.readline("\nUpgrade #{cask}? [y/n] ")
+                end
         next unless input == 'y'
-        puts "remove #{cask}"
-        BrewCask.remove(cask)
+
+        if options[:remove]
+          puts "remove #{cask}"
+          BrewCask.remove(cask)
+        end
+
         puts "install #{cask}"
         BrewCask.install(cask)
       end

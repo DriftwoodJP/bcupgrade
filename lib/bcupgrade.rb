@@ -25,9 +25,7 @@ module Bcupgrade
 
     # Upgrade cask
     if update_casks.any?
-      return if options[:dry_run]
-
-      Cask.upgrade(update_casks)
+      Cask.upgrade_version(options, update_casks)
     else
       puts "\nAlready up-to-date."
     end

@@ -14,7 +14,7 @@ OptionParser.new do |opt|
       options[:remove] = v
     end
     opt.on('-y', '--yes', 'Install cask without prompt') do |v|
-      options[:install_all] = v
+      options[:install] = v
     end
     opt.on('-v', '--version', 'Show version number') do
       puts Bcupgrade::VERSION

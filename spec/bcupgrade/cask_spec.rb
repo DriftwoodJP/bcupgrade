@@ -96,22 +96,22 @@ describe Bcupgrade::Cask do
           expect(instance.send(:trim_latest_version, input)).to eq('1.10.2')
         end
 
-        it 'returns a "6.3.2" format' do
+        it 'returns a "6.3.2"' do
           input = File.read('spec/factories/brew_cask_info_1password.txt')
           expect(instance.send(:trim_latest_version, input)).to eq('6.3.2')
         end
 
-        it 'returns a "2.1.3.0,143.3101438" format' do
+        it 'returns a "2.1.3.0,143.3101438"' do
           input = File.read('spec/factories/brew_cask_info_android-studio.txt')
           expect(instance.send(:trim_latest_version, input)).to eq('2.1.3.0,143.3101438')
         end
 
-        it 'returns a "3.1_718" format' do
+        it 'returns a "3.1_718"' do
           input = File.read('spec/factories/brew_cask_info_alfred.txt')
           expect(instance.send(:trim_latest_version, input)).to eq('3.1_718')
         end
 
-        it 'returns a "latest" format' do
+        it 'returns a "latest"' do
           input = File.read('spec/factories/brew_cask_info_betterzipql.txt')
           expect(instance.send(:trim_latest_version, input)).to eq('latest')
         end
@@ -169,7 +169,37 @@ describe Bcupgrade::Cask do
   end
 
   describe '#upgrade' do
-    xit 'is pending' do
+    let(:casks) { ['sublime-text2'] }
+
+    before do
+      allow(Bcupgrade::BrewCask).to receive(:remove).and_return('Success remove')
+      allow(Bcupgrade::BrewCask).to receive(:install).and_return('Success install')
+    end
+
+    context 'if options[:dry_run] == true' do
+      let(:options) { { dry_run: true } }
+
+      it 'returns a nil' do
+        expect(described_class.upgrade_version(options, casks)).to eq(nil)
+      end
+    end
+
+    context 'if options[:install] == true' do
+      let(:options) { { install: true } }
+      let(:out) { "install sublime-text2\n" }
+
+      it 'returns a install stdout' do
+        expect { described_class.upgrade_version(options, casks) }.to output(out).to_stdout
+      end
+    end
+
+    context 'if options[:install] == true && options[:remove] == true' do
+      let(:options) { { install: true, remove: true } }
+      let(:out) { "remove sublime-text2\ninstall sublime-text2\n" }
+
+      it 'returns a remove & install stdout' do
+        expect { described_class.upgrade_version(options, casks) }.to output(out).to_stdout
+      end
     end
   end
 end
