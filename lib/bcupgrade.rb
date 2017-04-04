@@ -9,9 +9,8 @@ module Bcupgrade
     # Check cask list
     puts "\n==> Check 'brew cask list'...\n"
 
-    cask_list = cask.list
-    installed_casks = cask_list[0]
-    error_casks = cask_list[1]
+    installed_casks = cask.installed_casks
+    error_casks = cask.error_casks
 
     puts "#{installed_casks}\n"
     if error_casks.any?
@@ -25,7 +24,7 @@ module Bcupgrade
 
     # Upgrade cask
     if update_casks.any?
-      Cask.upgrade_version(options, update_casks)
+      cask.upgrade_version(update_casks)
     else
       puts "\nAlready up-to-date."
     end

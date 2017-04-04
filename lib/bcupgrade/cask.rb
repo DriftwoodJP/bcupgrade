@@ -2,20 +2,21 @@ require 'yaml'
 
 module Bcupgrade
   class Cask
-    attr_reader :list
+    attr_reader :installed_casks, :error_casks
 
     def initialize(options, args)
       @config = config
       @options = options
       @args = args.uniq
       @list = upgrade_target
+      @installed_casks = @list[0]
+      @error_casks = @list[1]
     end
 
     def check_version
-      installed_casks = @list[0]
-
       update_casks = []
-      installed_casks.each do |name|
+
+      @installed_casks.each do |name|
         cask_info = BrewCask.info(name)
         version_number = trim_latest_version(cask_info)
 
@@ -31,18 +32,18 @@ module Bcupgrade
       update_casks
     end
 
-    def self.upgrade_version(options, casks)
-      return if options[:dry_run]
+    def upgrade_version(casks)
+      return if @options[:dry_run]
 
       casks.each do |cask|
-        input = if options[:install]
+        input = if @options[:install]
                   'y'
                 else
                   Readline.readline("\nUpgrade #{cask}? [y/n] ")
                 end
         next unless input == 'y'
 
-        if options[:remove]
+        if @options[:remove]
           puts "remove #{cask}"
           BrewCask.remove(cask)
         end
