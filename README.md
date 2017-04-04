@@ -34,13 +34,18 @@ Atom.app (app)
 ## Usage
 
 ```
-% bcupgrade -h
+% bcupgrade --help
 Usage: bcupgrade [options]
+    -d, --dry-run                    Show output without running
+    -r, --remove                     Remove previous version casks with installing
+    -y, --yes                        Install cask without prompt
     -v, --version                    Show version number
-        --dry-run                    Show output without running
 ```
 
-`bcupgrade` displays a confirmation prompt `[y/n]` when it attempts to re-install.
+`bcupgrade` with no arguments to check & upgrade all casks. 
+
+- displays a confirmation prompt `[y/n]` when it attempts to re-install.
+- Install latest version. (`brew cask install --force #{cask}`)
 
 ```
 % bcupgrade
@@ -55,7 +60,6 @@ atom / 1.10.2
 Upgrade 1password? [y/n] n
 
 Upgrade atom? [y/n] y
-remove atom
 install atom
 ==> Satisfying dependencies
 complete
@@ -70,47 +74,23 @@ complete
 🍺  atom was successfully installed!
 ```
 
-- Remove previous versions.
-  `rm -rf /usr/local/Caskroom/#{cask}`
-- Install latest version.
-  `brew cask install --force #{cask}`
+`bcupgrade` with arguments to check & upgrade selected casks.
 
 ```
-% brew cask info atom
-atom: 1.10.2
-https://atom.io/
-/usr/local/Caskroom/atom/1.10.2 (68B)
-From: https://github.com/caskroom/homebrew-cask/blob/master/Casks/atom.rb
-==> Name
-Github Atom
-==> Artifacts
-Atom.app (app)
-/Applications/Atom.app/Contents/Resources/app/apm/node_modules/.bin/apm (binary)
-/Applications/Atom.app/Contents/Resources/app/atom.sh (binary)
+% bcupgrade dropbox firefox
 ```
 
 
 ## Configuration File
 
-in the user's `~/.bcupgrade` (YAML syntax).
-
-If you want to ignore upgrade casks, you can add settings.
+If you want to ignore upgrade casks, you can add settings in the user's `~/.bcupgrade` (YAML syntax).
 
 ```
 ignore:
-  - omniplan1
+  - omniplan
   - sublime-text2
 ```
 
-
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies.
-Then, run `rake spec` to run the tests.
-You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`.
-To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ## Contributing
 

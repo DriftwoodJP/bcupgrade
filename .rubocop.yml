@@ -7,5 +7,10 @@ AllCops:
 LineLength:
   Max: 120
 
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+    - 'test/**/*'
+
 RSpec/NestedGroups:
   Max: 4

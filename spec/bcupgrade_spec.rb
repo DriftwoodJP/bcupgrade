@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Bcupgrade do
-  xit 'is pending' do
+  it 'has a version number' do
+    expect(Bcupgrade::VERSION).not_to be(nil)
   end
 end

@@ -3,36 +3,28 @@ require_relative 'bcupgrade/brew_cask'
 require_relative 'bcupgrade/cask'
 
 module Bcupgrade
-  def self.run(options)
-    cask = Cask.new
+  def self.run(options, args)
+    cask = Cask.new(options, args)
 
     # Check cask list
     puts "\n==> Check 'brew cask list'...\n"
 
-    cask_list = cask.list
-    installed_casks = cask_list[0]
-    error_casks = cask_list[1]
+    installed_casks = cask.installed_casks
+    error_casks = cask.error_casks
 
     puts "#{installed_casks}\n"
-    unless error_casks == []
+    if error_casks.any?
       puts "\nSkip re-install: can't found brew cask info\n#{error_casks}\n"
     end
 
     # Check cask version
     puts "\n==> Check 'brew cask info' for the latest available version...\n"
 
-    update_casks = []
-    installed_casks.each do |name|
-      latest_version = Cask.check_version(name)
-      if latest_version
-        puts "#{name} / #{latest_version}"
-        update_casks.push(name)
-      end
-    end
+    update_casks = cask.check_version
 
     # Upgrade cask
     if update_casks.any?
-      Cask.upgrade(update_casks) unless options[:dry_run]
+      cask.upgrade_version(update_casks)
     else
       puts "\nAlready up-to-date."
     end
