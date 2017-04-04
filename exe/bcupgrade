@@ -6,18 +6,24 @@ require 'readline'
 
 OptionParser.new do |opt|
   begin
+    options = {}
+    opt.on('-d', '--dry-run', 'Show output without running') do |v|
+      options[:dry_run] = v
+    end
+    opt.on('-r', '--remove', 'Remove previous version casks with installing') do |v|
+      options[:remove] = v
+    end
+    opt.on('-y', '--yes', 'Install cask without prompt') do |v|
+      options[:install] = v
+    end
     opt.on('-v', '--version', 'Show version number') do
       puts Bcupgrade::VERSION
       exit
     end
-    opt.on('--dry-run', 'Show output without running') do
-      opt.parse!(ARGV)
-      Bcupgrade.run
-      exit
-    end
 
-    opt.parse!(ARGV)
-    Bcupgrade.run(true)
+    args = opt.parse!(ARGV)
+
+    Bcupgrade.run(options, args)
   rescue => e
     puts e.to_s
     exit
