@@ -6,11 +6,14 @@ require 'readline'
 
 OptionParser.new do |opt|
   begin
+    opt.program_name = File.basename($PROGRAM_NAME)
+    opt.banner = "Usage: #{opt.program_name} [options] [cask1 cask2 ...]"
+
     options = {}
-    opt.on('-d', '--dry-run', 'Show output without running') do |v|
+    opt.on('-d', '--dry-run', 'Check version without installing') do |v|
       options[:dry_run] = v
     end
-    opt.on('-r', '--remove', 'Remove previous version casks with installing') do |v|
+    opt.on('-r', '--remove', 'Remove previous version with installing') do |v|
       options[:remove] = v
     end
     opt.on('-y', '--yes', 'Install cask without prompt') do |v|
@@ -25,7 +28,7 @@ OptionParser.new do |opt|
 
     Bcupgrade.run(options, args)
   rescue => e
-    puts e.to_s
+    puts "Error: #{e}.\nSee #{opt}"
     exit
   end
 end
