@@ -4,6 +4,9 @@
 
 Upgrade all installed brew casks.
 
+
+
+
 ## Requirement
 
 - [Homebrew Cask](https://caskroom.github.io/) v0.60.1+
@@ -27,24 +30,23 @@ Atom.app (app)
 /Applications/Atom.app/Contents/Resources/app/atom.sh (binary)
 ```
 
+
+
+
 ## Installation
 
-    % gem install bcupgrade
+```
+% gem install bcupgrade
+```
+
+
+
 
 ## Usage
 
-```
-% bcupgrade --help
-Usage: bcupgrade [options]
-    -d, --dry-run                    Show output without running
-    -r, --remove                     Remove previous version casks with installing
-    -y, --yes                        Install cask without prompt
-    -v, --version                    Show version number
-```
-
 `bcupgrade` with no arguments to check & upgrade all casks. 
 
-- displays a confirmation prompt `[y/n]` when it attempts to re-install.
+- Displays a confirmation prompt `[y/n]` when it attempts to re-install.
 - Install latest version. (`brew cask install --force #{cask}`)
 
 ```
@@ -81,7 +83,19 @@ complete
 ```
 
 
-## Configuration File
+### Options
+
+```
+% bcupgrade --help
+Usage: bcupgrade [options] [cask1 cask2 ...]
+    -d, --dry-run                    Check version without installing
+    -r, --remove                     Remove previous version with installing
+    -y, --yes                        Install cask without prompt
+    -v, --version                    Show version number
+```
+
+
+### Configuration File
 
 If you want to ignore upgrade casks, you can add settings in the user's `~/.bcupgrade` (YAML syntax).
 
@@ -92,10 +106,14 @@ ignore:
 ```
 
 
+
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/DriftwoodJP/bcupgrade.
 This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+
+
 
 
 ## License
