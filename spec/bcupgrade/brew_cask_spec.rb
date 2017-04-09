@@ -10,7 +10,6 @@ describe Bcupgrade::BrewCask do
   end
 
   describe '#info' do
-    let(:installed_path) { Bcupgrade::BrewCask::CASKROOM_PATH }
     let(:app_name) { 'atom' }
     let(:cask_info) { described_class.info(app_name) }
     let(:first_line) do
@@ -27,8 +26,8 @@ describe Bcupgrade::BrewCask do
       expect(first_line).to match(latest_version)
     end
 
-    it 'has installed paths of cask' do
-      expect(cask_info).to include("#{installed_path}/#{app_name}/")
+    it 'has installed paths of cask version number' do
+      expect(cask_info).to include("/#{app_name}/#{latest_version}")
     end
   end
 end

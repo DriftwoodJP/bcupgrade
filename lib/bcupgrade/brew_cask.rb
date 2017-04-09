@@ -1,7 +1,5 @@
 module Bcupgrade
   module BrewCask
-    CASKROOM_PATH = '/usr/local/Caskroom'.freeze
-
     def self.list
       `brew cask list`
     end
@@ -11,7 +9,7 @@ module Bcupgrade
     end
 
     def self.remove(cask)
-      system "rm -rf #{CASKROOM_PATH}/#{cask}"
+      system "brew cask uninstall --force #{cask}"
     end
 
     def self.install(cask)
