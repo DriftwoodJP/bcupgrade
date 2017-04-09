@@ -20,7 +20,7 @@ module Bcupgrade
         cask_info = BrewCask.info(name)
         version_number = trim_latest_version(cask_info)
 
-        string = "#{BrewCask::CASKROOM_PATH}/#{name}/#{version_number}"
+        string = "/#{name}/#{version_number}"
         latest_version = cask_info.include?(string) ? nil : version_number
 
         if latest_version
