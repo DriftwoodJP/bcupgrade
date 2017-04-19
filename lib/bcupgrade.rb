@@ -18,8 +18,7 @@ module Bcupgrade
     end
 
     # Check cask version
-    puts "\n==> Check 'brew cask info' for the latest available version...\n"
-
+    puts "\n==> Check 'brew cask info'...\n"
     update_casks = cask.check_version
 
     # Upgrade cask
