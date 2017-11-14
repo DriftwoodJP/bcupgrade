@@ -1,18 +1,20 @@
 # coding: utf-8
+
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'bcupgrade/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'bcupgrade'
-  spec.version       = Bcupgrade::VERSION
-  spec.authors       = ['DriftwoodJP']
-  spec.email         = ['DriftwoodJP@users.noreply.github.com']
+  spec.name                  = 'bcupgrade'
+  spec.version               = Bcupgrade::VERSION
+  spec.authors               = ['DriftwoodJP']
+  spec.email                 = ['DriftwoodJP@users.noreply.github.com']
 
-  spec.summary       = 'Upgrade all installed brew casks.'
-  spec.description   = 'Upgrade all installed brew casks.'
-  spec.homepage      = 'https://github.com/DriftwoodJP/bcupgrade'
-  spec.license       = 'MIT'
+  spec.summary               = 'Upgrade all installed brew casks.'
+  spec.description           = 'Upgrade all installed brew casks.'
+  spec.homepage              = 'https://github.com/DriftwoodJP/bcupgrade'
+  spec.license               = 'MIT'
+  spec.required_ruby_version = '>= 2.0.0.648'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
@@ -23,12 +25,12 @@ Gem::Specification.new do |spec|
   #     "public gem pushes."
   # end
 
-  spec.files         = `git ls-files -z`.split("\x0").reject do |f|
+  spec.files                 = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
   end
-  spec.bindir        = 'exe'
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
-  spec.require_paths = ['lib']
+  spec.bindir                = 'exe'
+  spec.executables           = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  spec.require_paths         = ['lib']
 
   spec.add_development_dependency 'bundler', '~> 1.14.6'
   spec.add_development_dependency 'rake', '~> 12.0.0'

@@ -10,7 +10,7 @@ describe Bcupgrade::Cask do
       context 'if the config file exists' do
         it 'returns a object' do
           allow(ENV).to receive(:[]).with('HOME').and_return('spec/factories')
-          expect(instance.send(:config)).to eq('ignore' => %w(atom omniplan1))
+          expect(instance.send(:config)).to eq('ignore' => %w[atom omniplan1])
         end
       end
 
@@ -23,7 +23,7 @@ describe Bcupgrade::Cask do
     end
 
     describe '#ignore_casks' do
-      let(:casks) { %w(1password alfred atom bartender) }
+      let(:casks) { %w[1password alfred atom bartender] }
 
       it 'has a kind of Array' do
         expect(instance.send(:trim_ignore_casks, casks)).to be_kind_of(Array)
@@ -32,14 +32,14 @@ describe Bcupgrade::Cask do
       context "if config['ignore'] exists" do
         it 'returns an argument "casks" without ignore values' do
           allow(ENV).to receive(:[]).with('HOME').and_return('spec/factories')
-          expect(instance.send(:trim_ignore_casks, casks)).to eq(%w(1password alfred bartender))
+          expect(instance.send(:trim_ignore_casks, casks)).to eq(%w[1password alfred bartender])
         end
       end
 
       context "if config['ignore'] does not exist" do
         it 'returns an argument "casks"' do
           allow(ENV).to receive(:[]).with('HOME').and_return('')
-          expect(instance.send(:trim_ignore_casks, casks)).to eq(%w(1password alfred atom bartender))
+          expect(instance.send(:trim_ignore_casks, casks)).to eq(%w[1password alfred atom bartender])
         end
       end
     end
@@ -57,7 +57,7 @@ describe Bcupgrade::Cask do
         end
 
         it 'returns "installed_casks" and "error_casks"' do
-          expect(instance.send(:upgrade_target)).to eq([%w(1password actprinter alfred), %w(atom)])
+          expect(instance.send(:upgrade_target)).to eq([%w[1password actprinter alfred], %w[atom]])
         end
 
         it 'has not include "(!)"' do
@@ -66,10 +66,10 @@ describe Bcupgrade::Cask do
       end
 
       context 'if the @args exists' do
-        let(:args) { %w(cask1 cask2) }
+        let(:args) { %w[cask1 cask2] }
 
         it 'has @args' do
-          expect(instance.send(:upgrade_target)).to eq([%w(cask1 cask2), %w()])
+          expect(instance.send(:upgrade_target)).to eq([%w[cask1 cask2], %w[]])
         end
       end
     end
@@ -78,7 +78,7 @@ describe Bcupgrade::Cask do
       let(:array) { ['atom (!)', '1password', 'actprinter', 'alfred'] }
 
       it 'returns "installed_casks" and "error_casks"' do
-        expect(instance.send(:trim_target_to_a, array)).to eq([%w(1password actprinter alfred), %w(atom)])
+        expect(instance.send(:trim_target_to_a, array)).to eq([%w[1password actprinter alfred], %w[atom]])
       end
     end
 
@@ -121,7 +121,7 @@ describe Bcupgrade::Cask do
 
   describe '#check_version' do
     it 'returns a Array' do
-      instance.instance_variable_set('@installed_casks', %w(android-studio))
+      instance.instance_variable_set('@installed_casks', %w[android-studio])
       output = File.read('spec/factories/brew_cask_info_android-studio.txt')
       allow(Bcupgrade::BrewCask).to receive(:info).and_return(output)
       expect(instance.send(:check_version)).to be_kind_of(Array)
@@ -129,12 +129,12 @@ describe Bcupgrade::Cask do
 
     context 'When brew cask info raise error "Error: No available Cask for foobar"' do
       it 'returns  an empty array' do
-        instance.instance_variable_set('@installed_casks', %w(foobar))
+        instance.instance_variable_set('@installed_casks', %w[foobar])
         expect(instance.send(:check_version)).to eq([])
       end
 
       it 'returns an empty array (using stub)' do
-        instance.instance_variable_set('@installed_casks', %w(foobar))
+        instance.instance_variable_set('@installed_casks', %w[foobar])
         allow(Bcupgrade::BrewCask).to receive(:info).and_return('')
         expect(instance.send(:check_version)).to eq([])
       end
@@ -142,7 +142,7 @@ describe Bcupgrade::Cask do
 
     context 'When the latest version is installed,' do
       it 'returns an empty array' do
-        instance.instance_variable_set('@installed_casks', %w(atom))
+        instance.instance_variable_set('@installed_casks', %w[atom])
         output = File.read('spec/factories/brew_cask_info_atom.txt')
         allow(Bcupgrade::BrewCask).to receive(:info).and_return(output)
         expect(instance.send(:check_version)).to eq([])
@@ -151,7 +151,7 @@ describe Bcupgrade::Cask do
 
     context 'When the latest version is not installed,' do
       it 'returns an array that include cask name' do
-        instance.instance_variable_set('@installed_casks', %w(android-studio))
+        instance.instance_variable_set('@installed_casks', %w[android-studio])
         output = File.read('spec/factories/brew_cask_info_android-studio.txt')
         allow(Bcupgrade::BrewCask).to receive(:info).and_return(output)
         expect(instance.send(:check_version)).to eq(['android-studio'])
@@ -160,7 +160,7 @@ describe Bcupgrade::Cask do
 
     context 'When the previous version is installed,' do
       it 'returns an array that include cask name' do
-        instance.instance_variable_set('@installed_casks', %w(1password))
+        instance.instance_variable_set('@installed_casks', %w[1password])
         output = File.read('spec/factories/brew_cask_info_1password.txt')
         allow(Bcupgrade::BrewCask).to receive(:info).and_return(output)
         expect(instance.send(:check_version)).to eq(['1password'])
