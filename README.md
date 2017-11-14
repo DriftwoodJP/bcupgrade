@@ -2,33 +2,7 @@
 
 # Bcupgrade - brew cask upgrade
 
-Upgrade all installed brew casks.
-
-
-
-
-## Requirement
-
-- [Homebrew Cask](https://caskroom.github.io/) v0.60.1+
-
-
-This script uses `brew cask info` result.
-
-```
-% brew cask info atom
-atom: 1.10.2
-https://atom.io/
-/usr/local/Caskroom/atom/1.7.3 (does not exist)
-/usr/local/Caskroom/atom/1.8.0 (68B)
-/usr/local/Caskroom/atom/1.9.0 (2,546 files, 224.9M)
-From: https://github.com/caskroom/homebrew-cask/blob/master/Casks/atom.rb
-==> Name
-Github Atom
-==> Artifacts
-Atom.app (app)
-/Applications/Atom.app/Contents/Resources/app/apm/node_modules/.bin/apm (binary)
-/Applications/Atom.app/Contents/Resources/app/atom.sh (binary)
-```
+Awesome `brew cask upgrade` command.
 
 
 
@@ -56,13 +30,14 @@ Atom.app (app)
 ["1password", "alfred", "atom", "bartender"]
 
 ==> Check 'brew cask info' for the latest available version...
-1password / 6.3.2
-atom / 1.10.2
+1password (6.3.2)
+atom (1.10.2)
 
 Upgrade 1password? [y/n] n
 
 Upgrade atom? [y/n] y
-install atom
+
+==> Install atom
 ==> Satisfying dependencies
 complete
 ==> Downloading https://github.com/atom/atom/releases/download/v1.10.2/atom-mac.zip
@@ -101,8 +76,34 @@ If you want to ignore upgrade casks, you can add settings in the user's `~/.bcup
 
 ```
 ignore:
-  - omniplan
-  - sublime-text2
+  - iterm2
+  - sketch
+```
+
+
+
+
+## Requirement
+
+- [Homebrew Cask](https://caskroom.github.io/) v0.60.1+
+
+
+This script uses `brew cask info` result.
+
+```
+% brew cask info atom
+atom: 1.10.2
+https://atom.io/
+/usr/local/Caskroom/atom/1.7.3 (does not exist)
+/usr/local/Caskroom/atom/1.8.0 (68B)
+/usr/local/Caskroom/atom/1.9.0 (2,546 files, 224.9M)
+From: https://github.com/caskroom/homebrew-cask/blob/master/Casks/atom.rb
+==> Name
+Github Atom
+==> Artifacts
+Atom.app (app)
+/Applications/Atom.app/Contents/Resources/app/apm/node_modules/.bin/apm (binary)
+/Applications/Atom.app/Contents/Resources/app/atom.sh (binary)
 ```
 
 

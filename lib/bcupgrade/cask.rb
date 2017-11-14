@@ -24,7 +24,7 @@ module Bcupgrade
         latest_version = cask_info.include?(string) ? nil : version_number
 
         if latest_version
-          puts "#{name} / #{latest_version}"
+          puts "#{name} (#{latest_version})"
           update_casks.push(name)
         end
       end
@@ -44,11 +44,11 @@ module Bcupgrade
         next unless input == 'y'
 
         if @options[:remove]
-          puts "remove #{cask}"
+          puts "\n==> Remove #{cask}"
           BrewCask.remove(cask)
         end
 
-        puts "install #{cask}"
+        puts "\n==> Install #{cask}"
         BrewCask.install(cask)
       end
     end
