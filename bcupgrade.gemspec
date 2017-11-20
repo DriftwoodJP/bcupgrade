@@ -32,11 +32,11 @@ Gem::Specification.new do |spec|
   spec.executables           = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths         = ['lib']
 
-  spec.add_development_dependency 'bundler', '~> 1.14.6'
-  spec.add_development_dependency 'rake', '~> 12.0.0'
-  spec.add_development_dependency 'rspec', '~> 3.5.0'
-  spec.add_development_dependency 'rubocop', '~> 0.47.1'
-  spec.add_development_dependency 'rubocop-rspec', '~> 1.14.0'
-  spec.add_development_dependency 'pry', '~> 0.10.4'
-  spec.add_development_dependency 'pry-byebug', '~> 3.4.2'
+  spec.add_development_dependency 'bundler', '~> 1.16.0'
+  spec.add_development_dependency 'rake', '~> 12.3.0'
+  spec.add_development_dependency 'rspec', '~> 3.7.0'
+  spec.add_development_dependency 'rubocop', '~> 0.51.0'
+  spec.add_development_dependency 'rubocop-rspec', '~> 1.20.1'
+  spec.add_development_dependency 'pry', '~> 0.11.3'
+  spec.add_development_dependency 'pry-byebug', '~> 3.5.0'
 end
