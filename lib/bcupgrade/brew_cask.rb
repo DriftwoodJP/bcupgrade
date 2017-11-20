@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Bcupgrade
   module BrewCask
     def self.list
