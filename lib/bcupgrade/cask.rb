@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'yaml'
 
 module Bcupgrade
@@ -94,7 +95,7 @@ module Bcupgrade
 
     def trim_latest_version(cask_info)
       lines = cask_info.split(/\n/)
-      lines[0].gsub(/.+: (.+)/, '\1') if lines[0]
+      lines[0]&.gsub(/.+: (.+)/, '\1')
     end
   end
 end

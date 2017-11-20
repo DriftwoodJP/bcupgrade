@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require_relative 'bcupgrade/version'
 require_relative 'bcupgrade/brew_cask'
 require_relative 'bcupgrade/cask'
