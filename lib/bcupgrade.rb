@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative 'bcupgrade/version'
 require_relative 'bcupgrade/brew_cask'
 require_relative 'bcupgrade/cask'
@@ -7,22 +8,15 @@ module Bcupgrade
   def self.run(options, args)
     cask = Cask.new(options, args)
 
-    # Check cask list
-    puts "\n==> Check 'brew cask list'...\n"
+    unless cask.args.any?
+      puts "\n==> Outdated cask...\n"
+      BrewCask.output_outdated
 
-    installed_casks = cask.installed_casks
-    error_casks = cask.error_casks
-
-    puts "#{installed_casks}\n"
-    if error_casks.any?
-      puts "\nSkip re-install: can't found brew cask info\n#{error_casks}\n"
+      ignore = cask.config['ignore']
+      puts "\nNot upgrading pinned package:\n#{ignore}" if ignore
     end
 
-    # Check cask version
-    puts "\n==> Check 'brew cask info'...\n"
-    update_casks = cask.check_version
-
-    # Upgrade cask
+    update_casks = cask.target
     if update_casks.any?
       cask.upgrade_version(update_casks)
     else
