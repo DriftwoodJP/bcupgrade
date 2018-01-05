@@ -28,7 +28,7 @@ OptionParser.new do |opt|
     args = opt.parse!(ARGV)
 
     Bcupgrade.run(options, args)
-  rescue => e
+  rescue StandardError => e
     puts "Error: #{e}.\nSee #{opt}"
     exit
   end
