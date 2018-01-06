@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   spec.description           = 'Upgrade all installed brew casks.'
   spec.homepage              = 'https://github.com/DriftwoodJP/bcupgrade'
   spec.license               = 'MIT'
-  spec.required_ruby_version = '>= 2.3'
+  spec.required_ruby_version = '>= 2.3.3'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
