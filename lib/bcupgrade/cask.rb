@@ -28,7 +28,11 @@ module Bcupgrade
 
     def load_config
       file = File.join(ENV['HOME'], '.bcupgrade')
-      YAML.load_file(file) if File.exist?(file)
+      if File.exist?(file)
+        YAML.load_file(file)
+      else
+        ''
+      end
     end
 
     def upgrade_target
