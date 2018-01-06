@@ -18,9 +18,9 @@ describe Bcupgrade::Cask do
       end
 
       context 'when the config file does not exist' do
-        it 'returns a nil' do
+        it 'returns a empty' do
           allow(ENV).to receive(:[]).with('HOME').and_return('')
-          expect(instance.send(:load_config)).to eq('')
+          expect(instance.send(:load_config)).to be_empty
         end
       end
     end
