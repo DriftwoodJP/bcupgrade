@@ -7,6 +7,14 @@ Awesome `brew cask upgrade` command.
 
 
 
+## Requirement
+
+- [Homebrew Cask](https://caskroom.github.io/) v1.4.2 or later.
+- Ruby v2.3.3 or later. (System ruby on macOS High Sierra)
+
+
+
+
 ## Installation
 
 ```
@@ -20,35 +28,32 @@ Awesome `brew cask upgrade` command.
 
 `bcupgrade` with no arguments to check & upgrade all casks. 
 
-- Displays a confirmation prompt `[y/n]` when it attempts to re-install.
-- Install latest version. (`brew cask install --force #{cask}`)
+- Displays confirmation prompts `[y/n]`.
+- Install latest version. (`brew cask reinstall #{cask}`)
 
 ```
 % bcupgrade
 
-==> Check 'brew cask list'...
-["1password", "alfred", "atom", "bartender"]
+==> Outdated cask...
+omnioutliner (4.6.1) != 5.2
+scrivener (2.81.2,106) != 3.0.1,966
 
-==> Check 'brew cask info' for the latest available version...
-1password (6.3.2)
-atom (1.10.2)
+Not upgrading pinned package:
+["iterm2", "omniplan1", "omnioutliner", "sketch"]
 
-Upgrade 1password? [y/n] n
+Upgrade scrivener? [y/n] yes
 
-Upgrade atom? [y/n] y
-
-==> Install atom
+==> Upgrade scrivener
 ==> Satisfying dependencies
-complete
-==> Downloading https://github.com/atom/atom/releases/download/v1.10.2/atom-mac.zip
-############################################################################################################################## 100.0%
-==> Verifying checksum for Cask atom
-==> It seems there is already an App at '/Applications/Atom.app'; overwriting.
-==> Removing App: '/Applications/Atom.app'
-==> Moving App 'Atom.app' to '/Applications/Atom.app'
-==> Symlinking Binary 'apm' to '/usr/local/bin/apm'
-==> Symlinking Binary 'atom.sh' to '/usr/local/bin/atom'
-🍺  atom was successfully installed!
+==> Downloading https://scrivener.s3.amazonaws.com/mac_updates/Scrivener_1012_966.zip
+######################################################################## 100.0%
+==> Verifying checksum for Cask scrivener
+==> Uninstalling Cask scrivener
+==> Moving App 'Scrivener.app' back to '/usr/local/Caskroom/scrivener/2.81.2,106/Scrivener.app'.
+==> Purging files for version 2.81.2,106 of Cask scrivener
+==> Installing Cask scrivener
+==> Moving App 'Scrivener.app' to '/Applications/Scrivener.app'.
+🍺  scrivener was successfully installed!
 ```
 
 `bcupgrade` with arguments to check & upgrade selected casks.
@@ -62,10 +67,9 @@ complete
 
 ```
 % bcupgrade --help
-Usage: bcupgrade [options] [cask1 cask2 ...]
-    -d, --dry-run                    Check version without installing
-    -r, --remove                     Remove previous version with installing
-    -y, --yes                        Install cask without prompt
+Usage: bcupgrade [options] [cask1 cask2...]
+    -d, --dry-run                    Check outdated cask without upgrading
+    -y, --yes                        Automatic yes to prompts
     -v, --version                    Show version number
 ```
 
@@ -77,34 +81,12 @@ If you want to ignore upgrade casks, you can add settings in the user's `~/.bcup
 ```
 ignore:
   - iterm2
+  - omniplan1
+  - omnioutliner
   - sketch
 ```
 
-
-
-
-## Requirement
-
-- [Homebrew Cask](https://caskroom.github.io/) v0.60.1+
-
-
-This script uses `brew cask info` result.
-
-```
-% brew cask info atom
-atom: 1.10.2
-https://atom.io/
-/usr/local/Caskroom/atom/1.7.3 (does not exist)
-/usr/local/Caskroom/atom/1.8.0 (68B)
-/usr/local/Caskroom/atom/1.9.0 (2,546 files, 224.9M)
-From: https://github.com/caskroom/homebrew-cask/blob/master/Casks/atom.rb
-==> Name
-Github Atom
-==> Artifacts
-Atom.app (app)
-/Applications/Atom.app/Contents/Resources/app/apm/node_modules/.bin/apm (binary)
-/Applications/Atom.app/Contents/Resources/app/atom.sh (binary)
-```
+To stop from being upgraded: like `brew cask pin`
 
 
 
