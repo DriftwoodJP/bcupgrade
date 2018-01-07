@@ -3,6 +3,7 @@
 require_relative 'bcupgrade/version'
 require_relative 'bcupgrade/brew_cask'
 require_relative 'bcupgrade/cask'
+require_relative 'bcupgrade/config_file'
 
 module Bcupgrade
   def self.run(options, args)

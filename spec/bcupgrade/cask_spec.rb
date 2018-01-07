@@ -9,22 +9,6 @@ describe Bcupgrade::Cask do
   let(:instance) { described_class.new(options, args) }
 
   describe 'Private Method' do
-    describe '#load_config' do
-      context 'when the config file exists' do
-        it 'returns a object' do
-          allow(ENV).to receive(:[]).with('HOME').and_return('spec/factories')
-          expect(instance.send(:load_config)).to eq('ignore' => %w[atom omniplan1])
-        end
-      end
-
-      context 'when the config file does not exist' do
-        it 'returns a empty' do
-          allow(ENV).to receive(:[]).with('HOME').and_return('')
-          expect(instance.send(:load_config)).to be_empty
-        end
-      end
-    end
-
     describe '#exclude_ignore_casks' do
       let(:casks) { %w[1password alfred atom bartender] }
 

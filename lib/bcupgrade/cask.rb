@@ -7,7 +7,7 @@ module Bcupgrade
     attr_reader :config, :args, :target
 
     def initialize(options, args)
-      @config  = load_config
+      @config  = Bcupgrade::ConfigFile.new
       @options = options
       @args    = args.uniq
       @target  = upgrade_target
@@ -26,15 +26,6 @@ module Bcupgrade
 
     private
 
-    def load_config
-      file = File.join(ENV['HOME'], '.bcupgrade')
-      if File.exist?(file)
-        YAML.load_file(file)
-      else
-        ''
-      end
-    end
-
     def upgrade_target
       if @args.any?
         @args
@@ -45,11 +36,10 @@ module Bcupgrade
     end
 
     def exclude_ignore_casks(casks)
-      if @config.nil?
+      if @config.load.nil?
         casks
       else
-        ignore = Array(@config['ignore'])
-        casks - ignore
+        casks - @config.ignore
       end
     end
 
