@@ -6,7 +6,8 @@ require 'readline'
 describe Bcupgrade::Cask do
   let(:options) { {} }
   let(:args) { [] }
-  let(:instance) { described_class.new(options, args) }
+  let(:config) { Bcupgrade::ConfigFile.new }
+  let(:instance) { described_class.new(options, args, config) }
 
   describe 'Private Method' do
     describe '#exclude_ignore_casks' do
@@ -52,7 +53,7 @@ describe Bcupgrade::Cask do
         let(:args) { %w[cask1 cask2] }
 
         it 'has the @args' do
-          expect(instance.send(:upgrade_target)).to eq(%w[cask1 cask2])
+          expect(instance.send(:upgrade_target)).to eq(args)
         end
       end
     end
@@ -93,7 +94,7 @@ describe Bcupgrade::Cask do
     end
   end
 
-  describe '.upgrade_version' do
+  describe '#upgrade_version' do
     let(:casks) { ['sublime-text2'] }
 
     before do
@@ -104,6 +105,32 @@ describe Bcupgrade::Cask do
       it 'returns a nil' do
         instance.instance_variable_set('@options', dry_run: true)
         expect(instance.send(:upgrade_version, casks)).to eq(nil)
+      end
+    end
+  end
+
+  describe '#list_ignore' do
+    context 'when @config.ignore has some elements of an array' do
+      it 'has a kind of String' do
+        allow(config).to receive(:ignore).and_return(%w[iterm2 omniplan1 sketch])
+        expect(instance.send(:list_ignore)).to be_kind_of(String)
+      end
+
+      it 'returns ignore cask names' do
+        allow(config).to receive(:ignore).and_return(%w[iterm2 omniplan1 sketch])
+        expect(instance.send(:list_ignore)).to eq('iterm2 omniplan1 sketch')
+      end
+    end
+
+    context 'when @config.ignore has no element of an array' do
+      it 'has a kind of String' do
+        allow(config).to receive(:ignore).and_return(%w[])
+        expect(instance.send(:list_ignore)).to be_kind_of(String)
+      end
+
+      it 'returns a ""' do
+        allow(config).to receive(:ignore).and_return(%w[])
+        expect(instance.send(:list_ignore)).to eq('')
       end
     end
   end

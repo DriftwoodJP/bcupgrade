@@ -4,10 +4,10 @@ require 'yaml'
 
 module Bcupgrade
   class Cask
-    attr_reader :config, :args, :target
+    attr_reader :args, :target
 
-    def initialize(options, args)
-      @config  = Bcupgrade::ConfigFile.new
+    def initialize(options, args, config)
+      @config  = config
       @options = options
       @args    = args.uniq
       @target  = upgrade_target
@@ -22,6 +22,10 @@ module Bcupgrade
         puts "\n==> Upgrade #{cask}"
         BrewCask.install(cask)
       end
+    end
+
+    def list_ignore
+      @config.ignore.join(' ')
     end
 
     private
