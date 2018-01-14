@@ -4,8 +4,6 @@ require 'yaml'
 
 module Bcupgrade
   class Cask
-    attr_reader :args
-
     def initialize(options, args, config)
       @config   = config
       @options  = options
@@ -22,10 +20,6 @@ module Bcupgrade
         puts "\n==> Upgrade #{cask}"
         BrewCask.install(cask)
       end
-    end
-
-    def list_ignored_casks
-      @config.ignored_casks.join(' ')
     end
 
     def upgrade_targets

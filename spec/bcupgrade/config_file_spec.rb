@@ -83,4 +83,30 @@ describe Bcupgrade::ConfigFile do
       end
     end
   end
+
+  describe '#list_ignored_casks' do
+    context 'when config.ignore has some elements of an array' do
+      it 'has a kind of String' do
+        allow(ENV).to receive(:[]).with('HOME').and_return('spec/factories')
+        expect(instance.send(:list_ignored_casks)).to be_kind_of(String)
+      end
+
+      it 'returns ignore cask names' do
+        allow(ENV).to receive(:[]).with('HOME').and_return('spec/factories')
+        expect(instance.send(:list_ignored_casks)).to eq('atom omniplan1')
+      end
+    end
+
+    context 'when config.ignore has no element of an array' do
+      it 'has a kind of String' do
+        allow(ENV).to receive(:[]).with('HOME').and_return('')
+        expect(instance.send(:list_ignored_casks)).to be_kind_of(String)
+      end
+
+      it 'returns a ""' do
+        allow(ENV).to receive(:[]).with('HOME').and_return('')
+        expect(instance.send(:list_ignored_casks)).to eq('')
+      end
+    end
+  end
 end

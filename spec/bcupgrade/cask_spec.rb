@@ -91,32 +91,6 @@ describe Bcupgrade::Cask do
     end
   end
 
-  describe '#list_ignored_casks' do
-    context 'when @config.ignore has some elements of an array' do
-      it 'has a kind of String' do
-        allow(config).to receive(:ignored_casks).and_return(%w[iterm2 omniplan1 sketch])
-        expect(instance.send(:list_ignored_casks)).to be_kind_of(String)
-      end
-
-      it 'returns ignore cask names' do
-        allow(config).to receive(:ignored_casks).and_return(%w[iterm2 omniplan1 sketch])
-        expect(instance.send(:list_ignored_casks)).to eq('iterm2 omniplan1 sketch')
-      end
-    end
-
-    context 'when @config.ignore has no element of an array' do
-      it 'has a kind of String' do
-        allow(config).to receive(:ignored_casks).and_return(%w[])
-        expect(instance.send(:list_ignored_casks)).to be_kind_of(String)
-      end
-
-      it 'returns a ""' do
-        allow(config).to receive(:ignored_casks).and_return(%w[])
-        expect(instance.send(:list_ignored_casks)).to eq('')
-      end
-    end
-  end
-
   describe '#upgrade_targets' do
     let(:output) { "atom\n1password\nactprinter\nalfred\n" }
 

@@ -21,5 +21,9 @@ module Bcupgrade
     rescue StandardError
       ['']
     end
+
+    def list_ignored_casks
+      ignored_casks.join(' ')
+    end
   end
 end
