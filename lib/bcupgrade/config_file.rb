@@ -9,21 +9,17 @@ module Bcupgrade
     end
 
     def load
-      load_config
-    end
-
-    def ignore
-      Array(load['ignore'])
-    end
-
-    private
-
-    def load_config
       if File.exist?(@file)
         YAML.load_file(@file)
       else
-        ''
+        { 'ignore' => [''] }
       end
+    end
+
+    def ignore
+      load['ignore'].map { |e| e ? e : '' }
+    rescue StandardError
+      ['']
     end
   end
 end

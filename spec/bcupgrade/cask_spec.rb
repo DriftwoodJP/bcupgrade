@@ -13,20 +13,28 @@ describe Bcupgrade::Cask do
     describe '#exclude_ignore_casks' do
       let(:casks) { %w[1password alfred atom bartender] }
 
-      it 'has a kind of Array' do
-        expect(instance.send(:exclude_ignore_casks, casks)).to be_kind_of(Array)
+      context 'when argument "casks" is exist' do
+        it 'has a kind of Array' do
+          expect(instance.send(:exclude_ignore_casks, casks)).to be_kind_of(Array)
+        end
+      end
+
+      context 'when argument "casks" is not exist' do
+        it 'has a kind of Array' do
+          expect(instance.send(:exclude_ignore_casks, [''])).to be_kind_of(Array)
+        end
       end
 
       context "when config['ignore'] exists" do
-        it 'returns an array "casks" without ignore values' do
-          allow(ENV).to receive(:[]).with('HOME').and_return('spec/factories')
+        it 'returns the array "casks" without ignore values' do
+          allow(config).to receive(:ignore).and_return(%w[atom omniplan1])
           expect(instance.send(:exclude_ignore_casks, casks)).to eq(%w[1password alfred bartender])
         end
       end
 
       context "when config['ignore'] does not exist" do
-        it 'returns an argument "casks"' do
-          allow(ENV).to receive(:[]).with('HOME').and_return('')
+        it 'returns the argument "casks"' do
+          allow(config).to receive(:ignore).and_return([''])
           expect(instance.send(:exclude_ignore_casks, casks)).to eq(%w[1password alfred atom bartender])
         end
       end

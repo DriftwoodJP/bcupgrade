@@ -40,11 +40,7 @@ module Bcupgrade
     end
 
     def exclude_ignore_casks(casks)
-      if @config.load.nil?
-        casks
-      else
-        casks - @config.ignore
-      end
+      casks - @config.ignore
     end
 
     def prompt_answer_yes?(cask)
