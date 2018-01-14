@@ -6,69 +6,36 @@ require 'readline'
 describe Bcupgrade::Cask do
   let(:options) { {} }
   let(:args) { [] }
-  let(:instance) { described_class.new(options, args) }
+  let(:config) { Bcupgrade::ConfigFile.new }
+  let(:instance) { described_class.new(options, args, config) }
 
   describe 'Private Method' do
-    describe '#load_config' do
-      context 'when the config file exists' do
-        it 'returns a object' do
-          allow(ENV).to receive(:[]).with('HOME').and_return('spec/factories')
-          expect(instance.send(:load_config)).to eq('ignore' => %w[atom omniplan1])
-        end
-      end
-
-      context 'when the config file does not exist' do
-        it 'returns a empty' do
-          allow(ENV).to receive(:[]).with('HOME').and_return('')
-          expect(instance.send(:load_config)).to be_empty
-        end
-      end
-    end
-
     describe '#exclude_ignore_casks' do
       let(:casks) { %w[1password alfred atom bartender] }
 
-      it 'has a kind of Array' do
-        expect(instance.send(:exclude_ignore_casks, casks)).to be_kind_of(Array)
+      context 'when argument "casks" is exist' do
+        it 'has a kind of Array' do
+          expect(instance.send(:exclude_ignore_casks, casks)).to be_kind_of(Array)
+        end
+      end
+
+      context 'when argument "casks" is not exist' do
+        it 'has a kind of Array' do
+          expect(instance.send(:exclude_ignore_casks, [''])).to be_kind_of(Array)
+        end
       end
 
       context "when config['ignore'] exists" do
-        it 'returns an array "casks" without ignore values' do
-          allow(ENV).to receive(:[]).with('HOME').and_return('spec/factories')
+        it 'returns the array "casks" without ignore values' do
+          allow(config).to receive(:ignore).and_return(%w[atom omniplan1])
           expect(instance.send(:exclude_ignore_casks, casks)).to eq(%w[1password alfred bartender])
         end
       end
 
       context "when config['ignore'] does not exist" do
-        it 'returns an argument "casks"' do
-          allow(ENV).to receive(:[]).with('HOME').and_return('')
+        it 'returns the argument "casks"' do
+          allow(config).to receive(:ignore).and_return([''])
           expect(instance.send(:exclude_ignore_casks, casks)).to eq(%w[1password alfred atom bartender])
-        end
-      end
-    end
-
-    describe '#upgrade_target' do
-      let(:output) { "atom\n1password\nactprinter\nalfred\n" }
-
-      it 'has a kind of Array' do
-        expect(instance.send(:upgrade_target)).to be_kind_of(Array)
-      end
-
-      context 'when the @args does not exist' do
-        before do
-          allow(Bcupgrade::BrewCask).to receive(:outdated).and_return(output)
-        end
-
-        it 'returns outdated casks' do
-          expect(instance.send(:upgrade_target)).to eq(%w[atom 1password actprinter alfred])
-        end
-      end
-
-      context 'when the @args exists' do
-        let(:args) { %w[cask1 cask2] }
-
-        it 'has the @args' do
-          expect(instance.send(:upgrade_target)).to eq(%w[cask1 cask2])
         end
       end
     end
@@ -109,7 +76,7 @@ describe Bcupgrade::Cask do
     end
   end
 
-  describe '.upgrade_version' do
+  describe '#upgrade' do
     let(:casks) { ['sublime-text2'] }
 
     before do
@@ -119,7 +86,59 @@ describe Bcupgrade::Cask do
     context 'when options[:dry_run] is true ("-d")' do
       it 'returns a nil' do
         instance.instance_variable_set('@options', dry_run: true)
-        expect(instance.send(:upgrade_version, casks)).to eq(nil)
+        expect(instance.send(:upgrade, casks)).to eq(nil)
+      end
+    end
+  end
+
+  describe '#list_ignore' do
+    context 'when @config.ignore has some elements of an array' do
+      it 'has a kind of String' do
+        allow(config).to receive(:ignore).and_return(%w[iterm2 omniplan1 sketch])
+        expect(instance.send(:list_ignore)).to be_kind_of(String)
+      end
+
+      it 'returns ignore cask names' do
+        allow(config).to receive(:ignore).and_return(%w[iterm2 omniplan1 sketch])
+        expect(instance.send(:list_ignore)).to eq('iterm2 omniplan1 sketch')
+      end
+    end
+
+    context 'when @config.ignore has no element of an array' do
+      it 'has a kind of String' do
+        allow(config).to receive(:ignore).and_return(%w[])
+        expect(instance.send(:list_ignore)).to be_kind_of(String)
+      end
+
+      it 'returns a ""' do
+        allow(config).to receive(:ignore).and_return(%w[])
+        expect(instance.send(:list_ignore)).to eq('')
+      end
+    end
+  end
+
+  describe '#upgrade_target' do
+    let(:output) { "atom\n1password\nactprinter\nalfred\n" }
+
+    it 'has a kind of Array' do
+      expect(instance.send(:upgrade_target)).to be_kind_of(Array)
+    end
+
+    context 'when the @args does not exist' do
+      before do
+        allow(Bcupgrade::BrewCask).to receive(:outdated).and_return(output)
+      end
+
+      it 'returns outdated casks' do
+        expect(instance.send(:upgrade_target)).to eq(%w[atom 1password actprinter alfred])
+      end
+    end
+
+    context 'when the @args exists' do
+      let(:args) { %w[cask1 cask2] }
+
+      it 'has the @args' do
+        expect(instance.send(:upgrade_target)).to eq(args)
       end
     end
   end
