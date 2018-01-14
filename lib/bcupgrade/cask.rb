@@ -24,22 +24,22 @@ module Bcupgrade
       end
     end
 
-    def list_ignore
-      @config.ignore.join(' ')
+    def list_ignored_casks
+      @config.ignored_casks.join(' ')
     end
 
-    def upgrade_target
+    def upgrade_targets
       if @args.any?
         @args
       else
-        exclude_ignore_casks(@outdated)
+        exclude_ignored_casks(@outdated)
       end
     end
 
     private
 
-    def exclude_ignore_casks(casks)
-      casks - @config.ignore
+    def exclude_ignored_casks(casks)
+      casks - @config.ignored_casks
     end
 
     def prompt_answer_yes?(cask)

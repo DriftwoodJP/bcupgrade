@@ -13,11 +13,11 @@ module Bcupgrade
       puts "\n==> Outdated cask...\n"
       BrewCask.output_outdated
 
-      ignore = cask.list_ignore
+      ignore = cask.list_ignored_casks
       puts "\nNot upgrading pinned package:\n#{ignore}" unless ignore.empty?
     end
 
-    update_casks = cask.upgrade_target
+    update_casks = cask.upgrade_targets
     if update_casks.any?
       cask.upgrade(update_casks)
     else
