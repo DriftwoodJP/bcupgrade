@@ -40,32 +40,6 @@ describe Bcupgrade::Cask do
       end
     end
 
-    describe '#upgrade_target' do
-      let(:output) { "atom\n1password\nactprinter\nalfred\n" }
-
-      it 'has a kind of Array' do
-        expect(instance.send(:upgrade_target)).to be_kind_of(Array)
-      end
-
-      context 'when the @args does not exist' do
-        before do
-          allow(Bcupgrade::BrewCask).to receive(:outdated).and_return(output)
-        end
-
-        it 'returns outdated casks' do
-          expect(instance.send(:upgrade_target)).to eq(%w[atom 1password actprinter alfred])
-        end
-      end
-
-      context 'when the @args exists' do
-        let(:args) { %w[cask1 cask2] }
-
-        it 'has the @args' do
-          expect(instance.send(:upgrade_target)).to eq(args)
-        end
-      end
-    end
-
     describe '#prompt_answer_yes' do
       let(:casks) { %w[1password alfred atom bartender] }
 
@@ -102,7 +76,7 @@ describe Bcupgrade::Cask do
     end
   end
 
-  describe '#upgrade_version' do
+  describe '#upgrade' do
     let(:casks) { ['sublime-text2'] }
 
     before do
@@ -112,7 +86,7 @@ describe Bcupgrade::Cask do
     context 'when options[:dry_run] is true ("-d")' do
       it 'returns a nil' do
         instance.instance_variable_set('@options', dry_run: true)
-        expect(instance.send(:upgrade_version, casks)).to eq(nil)
+        expect(instance.send(:upgrade, casks)).to eq(nil)
       end
     end
   end
@@ -139,6 +113,32 @@ describe Bcupgrade::Cask do
       it 'returns a ""' do
         allow(config).to receive(:ignore).and_return(%w[])
         expect(instance.send(:list_ignore)).to eq('')
+      end
+    end
+  end
+
+  describe '#upgrade_target' do
+    let(:output) { "atom\n1password\nactprinter\nalfred\n" }
+
+    it 'has a kind of Array' do
+      expect(instance.send(:upgrade_target)).to be_kind_of(Array)
+    end
+
+    context 'when the @args does not exist' do
+      before do
+        allow(Bcupgrade::BrewCask).to receive(:outdated).and_return(output)
+      end
+
+      it 'returns outdated casks' do
+        expect(instance.send(:upgrade_target)).to eq(%w[atom 1password actprinter alfred])
+      end
+    end
+
+    context 'when the @args exists' do
+      let(:args) { %w[cask1 cask2] }
+
+      it 'has the @args' do
+        expect(instance.send(:upgrade_target)).to eq(args)
       end
     end
   end

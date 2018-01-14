@@ -4,16 +4,16 @@ require 'yaml'
 
 module Bcupgrade
   class Cask
-    attr_reader :args, :target
+    attr_reader :args
 
     def initialize(options, args, config)
-      @config  = config
-      @options = options
-      @args    = args.uniq
-      @target  = upgrade_target
+      @config   = config
+      @options  = options
+      @args     = args.uniq
+      @outdated = BrewCask.outdated.split(/\n/)
     end
 
-    def upgrade_version(casks)
+    def upgrade(casks)
       return if @options[:dry_run]
 
       casks.each do |cask|
@@ -28,16 +28,15 @@ module Bcupgrade
       @config.ignore.join(' ')
     end
 
-    private
-
     def upgrade_target
       if @args.any?
         @args
       else
-        outdated = BrewCask.outdated.split(/\n/)
-        exclude_ignore_casks(outdated)
+        exclude_ignore_casks(@outdated)
       end
     end
+
+    private
 
     def exclude_ignore_casks(casks)
       casks - @config.ignore

@@ -17,9 +17,9 @@ module Bcupgrade
       puts "\nNot upgrading pinned package:\n#{ignore}" if ignore
     end
 
-    update_casks = cask.target
+    update_casks = cask.upgrade_target
     if update_casks.any?
-      cask.upgrade_version(update_casks)
+      cask.upgrade(update_casks)
     else
       puts "\nAlready up-to-date."
     end
