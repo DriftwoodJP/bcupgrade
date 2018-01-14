@@ -3,22 +3,23 @@
 require_relative 'bcupgrade/version'
 require_relative 'bcupgrade/brew_cask'
 require_relative 'bcupgrade/cask'
+require_relative 'bcupgrade/config_file'
 
 module Bcupgrade
-  def self.run(options, args)
-    cask = Cask.new(options, args)
+  def self.run(options, args, config)
+    cask = Cask.new(options, args, config)
 
     unless cask.args.any?
       puts "\n==> Outdated cask...\n"
       BrewCask.output_outdated
 
-      ignore = cask.config['ignore']
-      puts "\nNot upgrading pinned package:\n#{ignore}" if ignore
+      ignore = cask.list_ignore
+      puts "\nNot upgrading pinned package:\n#{ignore}" unless ignore.empty?
     end
 
-    update_casks = cask.target
+    update_casks = cask.upgrade_target
     if update_casks.any?
-      cask.upgrade_version(update_casks)
+      cask.upgrade(update_casks)
     else
       puts "\nAlready up-to-date."
     end

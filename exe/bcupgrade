@@ -6,6 +6,8 @@ require 'optparse'
 require 'readline'
 
 OptionParser.new do |opt|
+  config = Bcupgrade::ConfigFile.new
+
   begin
     opt.program_name = File.basename($PROGRAM_NAME)
     opt.banner = "Usage: #{opt.program_name} [options] [cask1 cask2...]"
@@ -24,7 +26,7 @@ OptionParser.new do |opt|
 
     args = opt.parse!(ARGV)
 
-    Bcupgrade.run(options, args)
+    Bcupgrade.run(options, args, config)
   rescue StandardError => e
     puts "Error: #{e}.\nSee #{opt}"
     exit
