@@ -22,64 +22,90 @@ describe Bcupgrade::ConfigFile do
     end
   end
 
-  describe '#ignore' do
+  describe '#ignored_casks' do
     context 'when the config file exists' do
       it 'returns a Array' do
         allow(ENV).to receive(:[]).with('HOME').and_return('spec/factories')
-        expect(instance.send(:ignore)).to be_kind_of(Array)
+        expect(instance.send(:ignored_casks)).to be_kind_of(Array)
       end
 
       it 'returns ignore elements' do
         allow(ENV).to receive(:[]).with('HOME').and_return('spec/factories')
-        expect(instance.send(:ignore)).to eq(%w[atom omniplan1])
+        expect(instance.send(:ignored_casks)).to eq(%w[atom omniplan1])
       end
     end
 
     context 'when the config file does not exist' do
       it 'returns a Array' do
         allow(ENV).to receive(:[]).with('HOME').and_return('')
-        expect(instance.send(:ignore)).to be_kind_of(Array)
+        expect(instance.send(:ignored_casks)).to be_kind_of(Array)
       end
 
       it 'returns a "" element' do
         allow(ENV).to receive(:[]).with('HOME').and_return('')
-        expect(instance.send(:ignore)).to eq([''])
+        expect(instance.send(:ignored_casks)).to eq([''])
       end
     end
 
     context 'when the config file is empty' do
       it 'returns a Array' do
         allow(ENV).to receive(:[]).with('HOME').and_return('spec/factories/empty')
-        expect(instance.send(:ignore)).to be_kind_of(Array)
+        expect(instance.send(:ignored_casks)).to be_kind_of(Array)
       end
 
       it 'returns a "" element' do
         allow(ENV).to receive(:[]).with('HOME').and_return('spec/factories/empty')
-        expect(instance.send(:ignore)).to eq([''])
+        expect(instance.send(:ignored_casks)).to eq([''])
       end
     end
 
     context 'when the ignore has no element in the config file' do
       it 'returns a Array' do
         allow(ENV).to receive(:[]).with('HOME').and_return('spec/factories/empty_value')
-        expect(instance.send(:ignore)).to be_kind_of(Array)
+        expect(instance.send(:ignored_casks)).to be_kind_of(Array)
       end
 
       it 'returns a "" element' do
         allow(ENV).to receive(:[]).with('HOME').and_return('spec/factories/empty_value')
-        expect(instance.send(:ignore)).to eq([''])
+        expect(instance.send(:ignored_casks)).to eq([''])
       end
     end
 
     context 'when the ignore has nil element in the config file' do
       it 'returns a Array' do
         allow(ENV).to receive(:[]).with('HOME').and_return('spec/factories/empty_value_nil')
-        expect(instance.send(:ignore)).to be_kind_of(Array)
+        expect(instance.send(:ignored_casks)).to be_kind_of(Array)
       end
 
       it 'returns a "" element' do
         allow(ENV).to receive(:[]).with('HOME').and_return('spec/factories/empty_value_nil')
-        expect(instance.send(:ignore)).to eq([''])
+        expect(instance.send(:ignored_casks)).to eq([''])
+      end
+    end
+  end
+
+  describe '#list_ignored_casks' do
+    context 'when config.ignore has some elements of an array' do
+      it 'has a kind of String' do
+        allow(ENV).to receive(:[]).with('HOME').and_return('spec/factories')
+        expect(instance.send(:list_ignored_casks)).to be_kind_of(String)
+      end
+
+      it 'returns ignore cask names' do
+        allow(ENV).to receive(:[]).with('HOME').and_return('spec/factories')
+        expect(instance.send(:list_ignored_casks)).to eq('atom omniplan1')
+      end
+    end
+
+    context 'when config.ignore has no element of an array' do
+      it 'has a kind of String' do
+        allow(ENV).to receive(:[]).with('HOME').and_return('')
+        expect(instance.send(:list_ignored_casks)).to be_kind_of(String)
+      end
+
+      it 'returns a ""' do
+        allow(ENV).to receive(:[]).with('HOME').and_return('')
+        expect(instance.send(:list_ignored_casks)).to eq('')
       end
     end
   end

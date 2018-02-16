@@ -1,4 +1,7 @@
 [![Gem Version](https://badge.fury.io/rb/bcupgrade.svg)](https://badge.fury.io/rb/bcupgrade)
+[![Build Status](https://travis-ci.org/DriftwoodJP/bcupgrade.svg?branch=master)](https://travis-ci.org/DriftwoodJP/bcupgrade)
+[![Maintainability](https://api.codeclimate.com/v1/badges/530785088f8f43bc075b/maintainability)](https://codeclimate.com/github/DriftwoodJP/bcupgrade/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/530785088f8f43bc075b/test_coverage)](https://codeclimate.com/github/DriftwoodJP/bcupgrade/test_coverage)
 
 # Bcupgrade - brew cask upgrade
 
