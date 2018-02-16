@@ -16,10 +16,14 @@ module Bcupgrade
       end
     end
 
-    def ignore
+    def ignored_casks
       load['ignore'].map { |e| e ? e : '' }
     rescue StandardError
       ['']
+    end
+
+    def list_ignored_casks
+      ignored_casks.join(' ')
     end
   end
 end
