@@ -1,3 +1,4 @@
+[![license: MIT](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE.txt)
 [![Gem Version](https://badge.fury.io/rb/bcupgrade.svg)](https://badge.fury.io/rb/bcupgrade)
 [![Build Status](https://travis-ci.org/DriftwoodJP/bcupgrade.svg?branch=master)](https://travis-ci.org/DriftwoodJP/bcupgrade)
 [![Dependency Status](https://beta.gemnasium.com/badges/github.com/DriftwoodJP/bcupgrade.svg)](https://beta.gemnasium.com/projects/github.com/DriftwoodJP/bcupgrade)
@@ -105,5 +106,5 @@ This project is intended to be a safe, welcoming space for collaboration, and co
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+The gem is available as open source under the terms of the [MIT License](LICENSE.txt).
 
