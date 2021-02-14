@@ -4,10 +4,12 @@ env:
 sudo: false
 language: ruby
 os: osx
+osx_image: xcode12.2
 cache: bundler
 rvm:
   - 2.6
   - 2.7
+  - 3.0
 before_install:
   - gem install bundler
 before_script:
