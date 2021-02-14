@@ -6,16 +6,16 @@ language: ruby
 os: osx
 cache: bundler
 rvm:
-  - 2.3.3
-  - 2.4
+  - 2.6
+  - 2.7
 before_install:
-  - gem install bundler -v 1.16.1
+  - gem install bundler
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-darwin-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
 script:
-  - brew cask --version
+  - brew --version
   - bundle exec rspec
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

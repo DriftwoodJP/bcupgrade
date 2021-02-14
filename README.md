@@ -14,8 +14,8 @@ Awesome `brew cask upgrade` command.
 
 ## Requirement
 
-- [Homebrew Cask](https://caskroom.github.io/) v1.4.2 or later.
-- Ruby v2.3.3 or later. (System ruby on macOS High Sierra)
+- [Homebrew Cask](https://caskroom.github.io/) v3.0 or later.
+- Ruby v2.6.6 or later.
 
 
 
