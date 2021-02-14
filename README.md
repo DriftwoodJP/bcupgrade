@@ -1,5 +1,7 @@
+[![license: MIT](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE.txt)
 [![Gem Version](https://badge.fury.io/rb/bcupgrade.svg)](https://badge.fury.io/rb/bcupgrade)
 [![Build Status](https://travis-ci.org/DriftwoodJP/bcupgrade.svg?branch=master)](https://travis-ci.org/DriftwoodJP/bcupgrade)
+[![Dependency Status](https://beta.gemnasium.com/badges/github.com/DriftwoodJP/bcupgrade.svg)](https://beta.gemnasium.com/projects/github.com/DriftwoodJP/bcupgrade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/530785088f8f43bc075b/maintainability)](https://codeclimate.com/github/DriftwoodJP/bcupgrade/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/530785088f8f43bc075b/test_coverage)](https://codeclimate.com/github/DriftwoodJP/bcupgrade/test_coverage)
 
@@ -12,8 +14,8 @@ Awesome `brew cask upgrade` command.
 
 ## Requirement
 
-- [Homebrew Cask](https://caskroom.github.io/) v1.4.2 or later.
-- Ruby v2.3.3 or later. (System ruby on macOS High Sierra)
+- [Homebrew Cask](https://caskroom.github.io/) v3.0 or later.
+- Ruby v2.6.6 or later.
 
 
 
@@ -104,5 +106,5 @@ This project is intended to be a safe, welcoming space for collaboration, and co
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+The gem is available as open source under the terms of the [MIT License](LICENSE.txt).
 
